@@ -2,6 +2,7 @@
 namespace jtl\Connector\Oxid\Mapper;
 
 use \jtl\Connector\Model\Identity;
+use \jtl\Connector\Oxid\Utils\Db;
 
 class BaseMapper
 {
@@ -16,7 +17,7 @@ class BaseMapper
 		$reflect = new \ReflectionClass($this);
 		$typeClass = "\\jtl\\Connector\\Type\\{$reflect->getShortName()}";
 
-		$this->db = \oxDb::getInstance()->getDb(\oxDb::FETCH_MODE_ASSOC);
+		$this->db = DB::getInstance();
 		$this->utils = \jtl\Connector\Oxid\Utils\Utils::getInstance();
         $this->model = "\\jtl\\Connector\\Model\\{$reflect->getShortName()}";   
         $this->type = new $typeClass();        
@@ -45,8 +46,7 @@ class BaseMapper
 				$value = (bool) $value;
 			} elseif ($property->getType() == 'integer') {
 				$value = intval($value);
-			}
-		
+			}		
 
 			$model->$setter($value);
 		}
@@ -61,22 +61,28 @@ class BaseMapper
 		$assign = array();
 
 		foreach ($this->push as $endpoint => $host) {
-			$getter = 'get'.ucfirst($host);
+			$fnName = strtolower($endpoint);
 
-			$value = $data->$getter();
-			$property = $this->type->getProperty($host);
+			if (method_exists($this, $fnName)) {
+				$value = $this->$fnName($data);
+			} else {
+				$getter = 'get'.ucfirst($host);
 
-			if ($property->isNavigation()) {
-				$subControllerName = "\\jtl\\Connector\\Oxid\\Controller\\".$endpoint;
-				
-				if (class_exists($subControllerName)) {
-					$subController = new $subControllerName();
-					$subController->pushData($data, $model);
-				}
-			} elseif ($property->isIdentity()) {
-				$value = $value->getEndpoint();
-			}			
+				$value = $data->$getter();
+				$property = $this->type->getProperty($host);
 
+				if ($property->isNavigation()) {
+					$subControllerName = "\\jtl\\Connector\\Oxid\\Controller\\".$endpoint;
+					
+					if (class_exists($subControllerName)) {
+						$subController = new $subControllerName();
+						$subController->pushData($data, $model);
+					}
+				} elseif ($property->isIdentity()) {
+					$value = $value->getEndpoint();
+				}			
+			}
+			
 			$assign[$endpoint] = $value;			
 		}
 

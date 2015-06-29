@@ -9,6 +9,7 @@ use \jtl\Connector\Core\Model\DataModel;
 use \jtl\Connector\Core\Model\QueryFilter;
 use \jtl\Connector\Core\Logger\Logger;
 use \jtl\Connector\Formatter\ExceptionFormatter;
+use \jtl\Connector\Oxid\Utils\Db;
 
 abstract class BaseController extends Controller
 {
@@ -21,7 +22,7 @@ abstract class BaseController extends Controller
 
     public function __construct()
     {
-        $this->db = \oxDb::getInstance()->getDb(\oxDb::FETCH_MODE_ASSOC);
+        $this->db = DB::getInstance();
         $this->utils = \jtl\Connector\Oxid\Utils\Utils::getInstance();
 
         $reflect = new \ReflectionClass($this);
@@ -58,7 +59,17 @@ abstract class BaseController extends Controller
         $action->setHandled(true);
 
         try {
-            $action->setResult($this->pushData($data, null));
+            if (method_exists($this, 'prePush')) {
+                $this->prePush($data);
+            }
+
+            $result = $this->pushData($data, null);
+
+            if (method_exists($this, 'postPush')) {
+                $this->postPush($data, $result);
+            }
+
+            $action->setResult($result);
         } catch (\Exception $exc) {
             Logger::write(ExceptionFormatter::format($exc), Logger::WARNING, 'controller');
 

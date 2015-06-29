@@ -65,6 +65,7 @@ class Connector extends Controller
         $connector->setEndpointVersion($aModule['version']);
         $connector->setPlatformName('OXID eshop');
         $connector->setPlatformVersion(\oxRegistry::getConfig()->getVersion());
+        $connector->setProtocolVersion(Application()->getProtocolVersion());
 
         $action->setResult($connector);
 
