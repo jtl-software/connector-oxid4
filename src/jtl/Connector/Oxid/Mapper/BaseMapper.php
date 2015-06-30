@@ -28,27 +28,34 @@ class BaseMapper
 		$model = new $this->model();
 
 		foreach ($this->pull as $host => $endpoint) {
-			$setter = 'set'.ucfirst($host);
+			$setter = 'set'.ucfirst($host);			
+			$fnName = strtolower($host);
 
-			$value = $data[$endpoint];		
-			$property = $this->type->getProperty($host);
+			if (method_exists($this, $fnName)) {
+				$value = $this->$fnName($data);
+			} else {
+				$value = $data[$endpoint];		
+				$property = $this->type->getProperty($host);
 
-			if ($property->isNavigation()) {
-				$subControllerName = "\\jtl\\Connector\\Oxid\\Controller\\".$endpoint;
-				
-				if (class_exists($subControllerName)) {
-					$subController = new $subControllerName();
-					$value = $subController->pullData($data, $model);
+				if ($property->isNavigation()) {
+					$subControllerName = "\\jtl\\Connector\\Oxid\\Controller\\".$endpoint;
+					
+					if (class_exists($subControllerName)) {
+						$subController = new $subControllerName();
+						$value = $subController->pullData($data, $model);
+					}
+				} elseif ($property->isIdentity()) {
+					$value = new Identity($value);
+				} elseif ($property->getType() == 'boolean') {
+					$value = (bool) $value;
+				} elseif ($property->getType() == 'integer') {
+					$value = intval($value);
+				} elseif ($property->getType() == 'DateTime') {
+					$value = $value == '0000-00-00' ? null : new \DateTime($value);
 				}
-			} elseif ($property->isIdentity()) {
-				$value = new Identity($value);
-			} elseif ($property->getType() == 'boolean') {
-				$value = (bool) $value;
-			} elseif ($property->getType() == 'integer') {
-				$value = intval($value);
 			}		
 
-			$model->$setter($value);
+			if (!empty($value)) $model->$setter($value);
 		}
 
 		return $model;

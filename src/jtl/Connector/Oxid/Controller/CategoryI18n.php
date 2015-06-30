@@ -9,8 +9,10 @@ class CategoryI18n extends BaseController
 	{
 		$i18ns = array();
 
-		foreach ($this->utils->getLanguages() as $column => $language) {
-			$column = $column == 0 ? '' : '_'.$column;
+		$seoEncoder = new \oxSeoEncoder();
+
+		foreach ($this->utils->getLanguages() as $id => $language) {
+			$column = $id == 0 ? '' : '_'.$id;
 
 			if (!empty($data['OXTITLE'.$column])) {
 				$i18n = new CategoryI18nModel();
@@ -18,6 +20,8 @@ class CategoryI18n extends BaseController
 				$i18n->setDescription($data['OXLONGDESC'].$colum);
 				$i18n->setLanguageISO($language->iso3);
 				$i18n->setCategoryId($model->getId());
+				$i18n->setMetaKeywords($seoEncoder->getMetaData($data['OXID'], 'oxkeywords', null, $id));
+				$i18n->setMetaDescription($seoEncoder->getMetaData($data['OXID'], 'oxdescription', null, $id));
 
 				$i18ns[] = $i18n;
 			}
