@@ -11,7 +11,7 @@ class Customer extends BaseController
 			LEFT JOIN oxcountry c ON c.OXID = u.OXCOUNTRYID
 			LEFT JOIN oxstates s ON s.OXID = u.OXSTATEID
 			LEFT JOIN jtl_connector_link l ON u.OXID = l.endpointId AND l.type = 2
-            WHERE l.hostId IS NULL             
+            WHERE l.hostId IS NULL && u.OXID != "oxdefaultadmin"            
             LIMIT '.$limit
         );
 
@@ -56,7 +56,7 @@ class Customer extends BaseController
 			SELECT COUNT(*) 
 			FROM oxuser u 
 			LEFT JOIN jtl_connector_link l ON u.OXID = l.endpointId AND l.type = 2
-            WHERE l.hostId IS NULL
+            WHERE l.hostId IS NULL && u.OXID != "oxdefaultadmin"
         ');
 	}
 }

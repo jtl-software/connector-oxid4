@@ -20,10 +20,10 @@ class Connector extends Controller
 
         $mainControllers = array(
             'Category',
-            //'Customer',
+            'Customer',
             //'CustomerOrder',
             //'Image',
-            //'Product',
+            'Product',
             'Manufacturer',
         );
 
