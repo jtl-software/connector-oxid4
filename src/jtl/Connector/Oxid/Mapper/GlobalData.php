@@ -8,7 +8,8 @@ class GlobalData extends BaseMapper
 	protected $pull = array(
 		'languages' => 'Language',
 		'currencies' => 'Currency',
-		'measurementUnits' => 'MeasurementUnit'
+		'measurementUnits' => 'MeasurementUnit',
+        'taxRates' => 'TaxRate'
 	);
 
 	protected $push = array(		
