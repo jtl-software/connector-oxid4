@@ -1,28 +1,28 @@
 <?php
 namespace jtl\Connector\Oxid\Controller;
 
-use \jtl\Connector\Model\CategoryAttr as CategoryAttrModel;
-use \jtl\Connector\Oxid\Controller\CategoryAttrI18n as CategoryAttrI18nController;
+use \jtl\Connector\Model\ProductAttr as ProductAttrModel;
+use \jtl\Connector\Oxid\Controller\ProductAttrI18n as ProductAttrI18nController;
 
-class CategoryAttr extends BaseController
+class ProductAttr extends BaseController
 {	
 	public function pullData($data, $model)
 	{
 		$attributesResult = $this->db->getAll('
-			SELECT a.* 
+			SELECT a.*, c.* 
 			FROM oxattribute a
-			LEFT JOIN oxcategory2attribute c ON c.OXATTRID = a.OXID
+			LEFT JOIN oxobject2attribute c ON c.OXATTRID = a.OXID
 			WHERE c.OXOBJECTID = "'.$data['OXID'].'"
 		');
 
 		$attrs = array();
 
-		$i18ns = new CategoryAttrI18nController();
+		$i18ns = new ProductAttrI18nController();
 
 		foreach ($attributesResult as $attributeData) {
-			$attribute = new CategoryAttrModel();
+			$attribute = new ProductAttrModel();
 			$attribute->getId()->setEndpoint($attributeData['OXID']);
-			$attribute->setCategoryId($model->getId());
+			$attribute->setProductId($model->getId());
 			$attribute->setIsTranslated(true);
 
 			$attribute->setI18ns($i18ns->pullData($attributeData, $attribute));
@@ -32,16 +32,16 @@ class CategoryAttr extends BaseController
 
 		return $attrs;			
 	}
-
+	
 	public function pushData($data, $model)
 	{
 		foreach ($data->getAttributes() as $attr) {
 			$sql = new \stdClass;
 			$sql->OXID = $this->utils->oxid();
-			$sql->OXOBJECTID = $attr->getCategoryId()->getEndpoint(); 
+			$sql->OXOBJECTID = $attr->getProductId()->getEndpoint(); 
 			$sql->OXATTRID = $attr->getId()->getEndpoint();
 			
-			$this->db->insert($sql, 'oxcategory2attribute');			
+			$this->db->insert($sql, 'oxobject2attribute');			
 		}		
-	}
+	}	
 }

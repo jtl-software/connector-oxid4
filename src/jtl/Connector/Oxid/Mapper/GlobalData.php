@@ -11,7 +11,4 @@ class GlobalData extends BaseMapper
 		'measurementUnits' => 'MeasurementUnit',
         'taxRates' => 'TaxRate'
 	);
-
-	protected $push = array(		
-	);
 }

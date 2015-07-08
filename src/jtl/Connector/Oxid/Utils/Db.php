@@ -21,7 +21,8 @@ class Db {
 
     public function getAll($query)
     {
-    	return $this->db->getAll($query);
+    	$this->db->setFetchMode(\oxDb::FETCH_MODE_ASSOC);
+        return $this->db->getAll($query);
     }
 
     public function getOne($query)

@@ -1,9 +1,9 @@
 <?php
 namespace jtl\Connector\Oxid\Controller;
 
-use \jtl\Connector\Model\CategoryI18n as CategoryI18nModel;
+use \jtl\Connector\Model\ProductI18n as ProductI18nModel;
 
-class CategoryI18n extends BaseController
+class ProductI18n extends BaseController
 {	
 	public function pullData($data, $model)
 	{
@@ -13,13 +13,16 @@ class CategoryI18n extends BaseController
 
 		foreach ($this->utils->getLanguages() as $id => $language) {
 			$column = $id == 0 ? '' : '_'.$id;
-
+			
 			if (!empty($data['OXTITLE'.$column])) {
-				$i18n = new CategoryI18nModel();
+				$i18n = new ProductI18nModel();
 				$i18n->setName($data['OXTITLE'.$column]);
 				$i18n->setDescription($data['OXLONGDESC'.$column]);
+				$i18n->setShortDescription($data['OXSHORTDESC'.$column]);
+				$i18n->setMetaKeywords($data['OXTAGS'.$column]);
 				$i18n->setLanguageISO($language->iso3);
-				$i18n->setCategoryId($model->getId());
+				$i18n->setProductId($model->getId());
+				$i18n->setMeasurementUnitName($data['OXUNITNAME']);
 				
 				$metaKeys = $seoEncoder->getMetaData($data['OXID'], 'oxkeywords', null, $id);
 				if ($metaKeys) {
@@ -30,14 +33,14 @@ class CategoryI18n extends BaseController
 				if ($metaDesc) {
 					$i18n->setMetaDescription($metaDesc);
 				}				
-
+				
 				$i18ns[] = $i18n;
 			}
 		}
 
 		return $i18ns;			
 	}
-
+	
 	public function pushData($data, $model)
 	{
 		foreach ($data->getI18ns() as $i18n) {
@@ -55,5 +58,5 @@ class CategoryI18n extends BaseController
 				));
 			}
 		}
-	}
+	}	
 }

@@ -15,6 +15,6 @@ class Language extends BaseController
 			$return[] = $model;
 		}
 		
-		return $return;
+		return $return;		
 	}
 }

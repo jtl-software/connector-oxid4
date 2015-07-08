@@ -22,7 +22,7 @@ abstract class BaseController extends Controller
 
     public function __construct()
     {
-        $this->db = DB::getInstance();
+        $this->db = Db::getInstance();
         $this->utils = \jtl\Connector\Oxid\Utils\Utils::getInstance();
 
         $reflect = new \ReflectionClass($this);
