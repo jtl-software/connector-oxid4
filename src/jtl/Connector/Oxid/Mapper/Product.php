@@ -17,6 +17,7 @@ class Product extends BaseMapper
 		'ean' => 'OXEAN',
 		'height' => 'OXHEIGHT',
 		'isActive' => 'OXACTIVE',
+        'isMasterProduct' => null,
 		'keywords' => 'OXSEARCHKEYS',
 		'length' => 'OXLENGTH',
 		'manufacturerNumber' => 'OXMPN',
@@ -33,8 +34,8 @@ class Product extends BaseMapper
 		'attributes' => 'ProductAttr',
 		'categories' => 'Product2Category',
 		'i18ns' => 'ProductI18n',
-		'prices' => 'ProductPrice'
-		//'specialPrices'
+		'prices' => 'ProductPrice',
+		'specialPrices' => 'ProductSpecialPrice'
 		//'varCombinations'
 		//'partsLists'
 		//'partsListId'		
@@ -43,6 +44,11 @@ class Product extends BaseMapper
 	protected $push = array(
 		'OXID' => 'id'
 	);
+
+    protected function isMasterProduct($data)
+    {
+        return $data['combis'] > 0;
+    }
 
 	protected function measurementUnitCode($data)
 	{

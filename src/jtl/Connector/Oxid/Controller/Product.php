@@ -6,8 +6,8 @@ class Product extends BaseController
 	public function pullData($data, $model, $limit = null)
 	{
 		$result = $this->db->getAll('
-			SELECT a.*,d.*
-			FROM oxarticles a 
+			SELECT a.*,d.*,(SELECT COUNT(v.OXID) FROM oxarticles v WHERE v.OXPARENTID = a.OXID) AS combis
+			FROM oxarticles a
 			LEFT JOIN oxartextends d ON d.OXID = a.OXID
 			LEFT JOIN jtl_connector_link l ON a.OXID = l.endpointId AND l.type = 64
             WHERE l.hostId IS NULL 
