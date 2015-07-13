@@ -34,7 +34,7 @@ class JTLConnector
 		\oxDb::getDb()->execute($query);
 		
 		$linkQuery = "CREATE TABLE IF NOT EXISTS jtl_connector_link (
-                    endpointId char(32) NOT NULL,
+                    endpointId char(64) NOT NULL,
                     hostId int(10) NOT NULL,
                     type int(10),
                     PRIMARY KEY (endpointId, hostId, type)
