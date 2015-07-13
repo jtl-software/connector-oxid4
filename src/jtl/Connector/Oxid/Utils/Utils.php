@@ -3,6 +3,7 @@ namespace jtl\Connector\Oxid\Utils;
 
 use \jtl\Connector\Session\SessionHelper;
 use \jtl\Connector\Core\Utilities\Language;
+use \jtl\Connector\Oxid\Utils\Db;
 
 class Utils {
 	private static $instance;
@@ -62,4 +63,26 @@ class Utils {
 
 		return false;
 	}
+
+    public function getCountryIso($id)
+    {
+        $db = DB::getInstance();
+
+        $country = $db->getOne('SELECT OXISOALPHA2 FROM oxcountry WHERE OXID="'.$id.'"');
+
+        if ($country) {
+            return $country;
+        }
+    }
+
+    public function getState($id)
+    {
+        $db = DB::getInstance();
+
+        $state = $db->getOne('SELECT OXID FROM oxstates WHERE OXTITLE="'.$id.'"');
+
+        if ($state) {
+            return $state;
+        }
+    }
 }

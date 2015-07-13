@@ -53,7 +53,7 @@ class BaseMapper
 				} elseif ($property->getType() == 'double') {
 					$value = floatval($value);
 				} elseif ($property->getType() == 'DateTime') {
-					$value = $value == '0000-00-00' ? null : new \DateTime($value);
+					$value = $value == '0000-00-00' || $value == '0000-00-00 00:00:00' ? null : new \DateTime($value);
 				}
 			}		
 
