@@ -35,10 +35,8 @@ class Product extends BaseMapper
 		'categories' => 'Product2Category',
 		'i18ns' => 'ProductI18n',
 		'prices' => 'ProductPrice',
-		'specialPrices' => 'ProductSpecialPrice'
-		//'varCombinations'
-		//'partsLists'
-		//'partsListId'		
+		'specialPrices' => 'ProductSpecialPrice',
+		'varCombinations' => 'ProductVarCombination'
 	);
 
 	protected $push = array(
