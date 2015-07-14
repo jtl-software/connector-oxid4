@@ -83,27 +83,13 @@ class Oxid extends BaseConnector
     {
         $this->controller->setMethod($this->getMethod());
 
-        $result = array();
-
-        if ($requestpacket->getMethod() == 'image.push') {
-            $action = new Action();
-
-            $result = $this->controller->{$this->action}($requestpacket->getParams());
-
-            $action->setHandled(true)
-                ->setResult($result->getResult())
-                ->setError($result->getError());
-
-            return $action;
-
-        } elseif ($this->action === Method::ACTION_PUSH || $this->action === Method::ACTION_DELETE) {
+        if ($this->action !== Method::ACTION_PULL && $requestpacket->getMethod() !== 'image.push') {
             if (!is_array($requestpacket->getParams())) {
                 throw new \Exception('data is not an array');
             }
 
             $action = new Action();
             $results = array();
-            $errors = array();
 
             foreach ($requestpacket->getParams() as $param) {
                 $result = $this->controller->{$this->action}($param);
@@ -115,9 +101,9 @@ class Oxid extends BaseConnector
                 ->setError($result->getError());
 
             return $action;
-        } else {
-            return $this->controller->{$this->action}($requestpacket->getParams());
-        }        
+        }
+
+        return $this->controller->{$this->action}($requestpacket->getParams());
     }
 
     public function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
