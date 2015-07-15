@@ -18,7 +18,7 @@ class Image extends BaseController {
 
         $oxConfig = \oxRegistry::getConfig();
         $this->imgUrl = $oxConfig->getPictureUrl();
-        $this->imgPath = $oxConfig->getPicturePath();
+        $this->imgPath = $oxConfig->getPictureDir();
         $this->mapper = Application::getInstance()->getConnector()->getPrimaryKeyMapper();
     }
 
@@ -62,14 +62,28 @@ class Image extends BaseController {
                 $this->deleteData($data);
             }
 
+            $imgFileName = substr($data->getFilename(), strrpos($data->getFilename(), '/') + 1);
+
             switch ($data->getRelationType()) {
                 case ImageRelationType::TYPE_CATEGORY:
+                    if (!rename($data->getFilename(), $this->imgPath.'master/category/thumb/'.$imgFileName)) {
+                        throw new \Exception('Cannot move uploaded image file');
+                    }
+
+                    $this->db->execute('UPDATE oxcategories SET OXTHUMB = "'.$imgFileName.'" WHERE OXID = "'.$foreignId.'"');
+
+                    $endpointId = 'c'.'_'.$foreignId;
                     break;
                 case ImageRelationType::TYPE_MANUFACTURER:
+                    if (!rename($data->getFilename(), $this->imgPath.'master/manufacturer/icon/'.$imgFileName)) {
+                        throw new \Exception('Cannot move uploaded image file');
+                    }
+
+                    $this->db->execute('UPDATE oxmanufacturers SET OXICON = "'.$imgFileName.'" WHERE OXID = "'.$foreignId.'"');
+
+                    $endpointId = 'm'.'_'.$foreignId;
                     break;
                 case ImageRelationType::TYPE_PRODUCT:
-                    $imgFileName = substr($data->getFilename(), strrpos($data->getFilename(), '/') + 1);
-
                     if (!rename($data->getFilename(), $this->imgPath.'master/product/'.$data->getSort().'/'.$imgFileName)) {
                         throw new \Exception('Cannot move uploaded image file');
                     }
@@ -77,13 +91,12 @@ class Image extends BaseController {
                     $this->db->execute('UPDATE oxarticles SET OXPIC'.$data->getSort().' = "'.$imgFileName.'" WHERE OXID = "'.$foreignId.'"');
 
                     $endpointId = 'p'.$data->getSort().'_'.$foreignId;
-
-                    $this->mapper->save($endpointId, $data->getId()->getHost(), 16);
-
-                    $data->getId()->setEndpoint($endpointId);
-
                     break;
             }
+
+            $this->mapper->save($endpointId, $data->getId()->getHost(), 16);
+
+            $data->getId()->setEndpoint($endpointId);
         } else {
             throw new \Exception('Data is not an valid image model.');
         }
@@ -99,8 +112,28 @@ class Image extends BaseController {
         if (!is_null($id) && !is_null($foreignId)) {
             switch ($data->getRelationType()) {
                 case ImageRelationType::TYPE_CATEGORY:
+                    $cat = new \oxCategory();
+                    $cat->load($foreignId);
+
+                    $utilsFile = \oxRegistry::get("oxUtilsFile");
+                    $utilsPic = \oxRegistry::get("oxUtilsPic");
+
+                    $utilsPic->safePictureDelete($cat->oxcategories__oxthumb->value, $this->imgPath . $utilsFile->getImageDirByType('TC'), 'oxcategories', 'oxthumb');
+
+                    $cat->oxcategories__oxthumb = new \oxField();
+                    $cat->save();
                     break;
                 case ImageRelationType::TYPE_MANUFACTURER:
+                    $manufacturer = new \oxManufacturer();
+                    $manufacturer->load($foreignId);
+
+                    $utilsFile = \oxRegistry::get("oxUtilsFile");
+                    $utilsPic = \oxRegistry::get("oxUtilsPic");
+
+                    $utilsPic->safePictureDelete($manufacturer->oxmanufacturers__oxicon->value, $this->imgPath . $utilsFile->getImageDirByType('MICO'), 'oxmanufacturers', 'oxicon');
+
+                    $manufacturer->oxmanufacturers__oxicon = new \oxField();
+                    $manufacturer->save();
                     break;
                 case ImageRelationType::TYPE_PRODUCT:
                     preg_match('~p(\d)_~', $id, $col);

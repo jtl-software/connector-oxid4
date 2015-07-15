@@ -36,4 +36,9 @@ class ProductPrice extends BaseController
 
 		return array($price);
 	}
+
+    public function pushData($data)
+    {
+        return $data;
+    }
 }

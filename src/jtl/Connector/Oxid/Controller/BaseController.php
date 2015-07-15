@@ -18,8 +18,6 @@ abstract class BaseController extends Controller
     protected $mapper = null;
     private $controllerName = null;
 
-    public abstract function pullData($data, $model);    
-
     public function __construct()
     {
         $this->db = Db::getInstance();

@@ -9,9 +9,4 @@ class GlobalData extends BaseController
 
 		return [$model];
 	}
-
-	public function pushData($data)
-	{
-		return $data;
-	}
 }

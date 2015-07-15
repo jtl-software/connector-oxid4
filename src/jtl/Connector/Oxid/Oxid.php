@@ -83,7 +83,17 @@ class Oxid extends BaseConnector
     {
         $this->controller->setMethod($this->getMethod());
 
-        if ($this->action !== Method::ACTION_PULL && $requestpacket->getMethod() !== 'image.push') {
+        $actionExceptions = array(
+            'pull',
+            'statistic',
+            'identify'
+        );
+
+        $callExceptions = array(
+            'image.push'
+        );
+
+        if (!in_array($this->action, $actionExceptions) && !in_array($requestpacket->getMethod(), $callExceptions)) {
             if (!is_array($requestpacket->getParams())) {
                 throw new \Exception('data is not an array');
             }
