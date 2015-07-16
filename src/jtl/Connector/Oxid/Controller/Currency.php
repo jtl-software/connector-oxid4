@@ -16,6 +16,8 @@ class Currency extends BaseController
 			
 			$return[] = $model;
 		}
+
+        $return[0]->setIsDefault(true);
 		
 		return $return;
 	}

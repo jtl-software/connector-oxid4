@@ -8,7 +8,6 @@ use \jtl\Connector\Session\SessionHelper;
 use \jtl\Connector\Base\Connector as BaseConnector;
 use \jtl\Connector\Core\Rpc\Error as Error;
 use \jtl\Connector\Core\Http\Response;
-use \jtl\Connector\Core\Rpc\Method;
 use \jtl\Connector\Oxid\Mapper\PrimaryKeyMapper;
 use \jtl\Connector\Core\Config\Config;
 use \jtl\Connector\Core\Config\Loader\System as ConfigSystem;

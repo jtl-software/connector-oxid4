@@ -9,6 +9,7 @@ class GlobalData extends BaseMapper
 		'languages' => 'Language',
 		'currencies' => 'Currency',
 		'measurementUnits' => 'MeasurementUnit',
-        'taxRates' => 'TaxRate'
+        'taxRates' => 'TaxRate',
+        'customerGroups' => 'CustomerGroup'
 	);
 }
