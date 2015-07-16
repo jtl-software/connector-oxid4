@@ -52,6 +52,6 @@ class JTLConnector
 	public function onDeactivate()
 	{
 		$sQuery = 'DELETE FROM oxseo WHERE OXSEOURL="jtlconnector/"';
-		$sSql = \oxDb::getDb()->execute($sQuery);
+		\oxDb::getDb()->execute($sQuery);
 	}
 }

@@ -10,7 +10,7 @@ $aModule = array(
     'url' => 'http://jtl-software.de',
     'email' => 'daniel.hoffmann@jtl-software.com',
     'extend' => array(
-        'oxsession' => 'jtl-connector/src/jtl/Connector/Oxid/Extend/Session'
+        'oxsession' => 'jtl-connector/application/extend/Session'
     ),
 	'files' => array(
         'JTLConnector' => 'jtl-connector/jtlconnector.php',
