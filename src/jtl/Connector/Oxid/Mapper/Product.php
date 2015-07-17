@@ -36,7 +36,7 @@ class Product extends BaseMapper
 		'i18ns' => 'ProductI18n',
 		'prices' => 'ProductPrice',
 		'specialPrices' => 'ProductSpecialPrice',
-		'varCombinations' => 'ProductVarCombination'
+		'variations' => 'ProductVariation'
 	);
 
 	protected $push = array(

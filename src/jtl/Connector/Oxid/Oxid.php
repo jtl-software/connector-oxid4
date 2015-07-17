@@ -100,9 +100,17 @@ class Oxid extends BaseConnector
             $action = new Action();
             $results = array();
 
+            if (method_exists($this->controller, 'initPush')) {
+                $this->controller->initPush($requestpacket->getParams());
+            }
+
             foreach ($requestpacket->getParams() as $param) {
                 $result = $this->controller->{$this->action}($param);
                 $results[] = $result->getResult();
+            }
+
+            if (method_exists($this->controller, 'finishPush')) {
+                $this->controller->finishPush($requestpacket->getParams(), $results);
             }
 
             $action->setHandled(true)

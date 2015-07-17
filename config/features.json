@@ -23,12 +23,12 @@
         "CategoryI18n": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "CategoryInvisibility": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "ConfigGroup": {
             "pull": false,
@@ -55,6 +55,11 @@
             "push": false,
             "delete": false
         },
+        "CrossSelling": {
+            "pull": true,
+            "push": true,
+            "delete": true
+        },
         "CrossSellingGroup": {
             "pull": false,
             "push": false,
@@ -65,9 +70,14 @@
             "push": false,
             "delete": false
         },
-        "Currency": {
+        "CrossSellingItem": {
             "pull": true,
             "push": true,
+            "delete": false
+        },
+        "Currency": {
+            "pull": true,
+            "push": false,
             "delete": false
         },
         "Customer": {
@@ -116,12 +126,12 @@
             "delete": false
         },
         "CustomerOrderItem": {
-            "pull": true,
+            "pull": false,
             "push": false,
             "delete": false
         },
         "CustomerOrderItemVariation": {
-            "pull": true,
+            "pull": false,
             "push": false,
             "delete": false
         },
@@ -150,16 +160,6 @@
             "push": false,
             "delete": false
         },
-        "FileDownload": {
-            "pull": false,
-            "push": false,
-            "delete": false
-        },
-        "FileDownloadI18n": {
-            "pull": false,
-            "push": false,
-            "delete": false
-        },
         "FileUpload": {
             "pull": false,
             "push": false,
@@ -173,7 +173,7 @@
         "Image": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "Language": {
             "pull": true,
@@ -186,37 +186,17 @@
             "delete": true
         },
         "ManufacturerI18n": {
-            "pull": false,
-            "push": false,
+            "pull": true,
+            "push": true,
             "delete": false
         },
         "MeasurementUnit": {
-            "pull": false,
+            "pull": true,
             "push": false,
             "delete": false
         },
         "MeasurementUnitI18n": {
-            "pull": false,
-            "push": false,
-            "delete": false
-        },
-        "MediaFile": {
-            "pull": false,
-            "push": false,
-            "delete": false
-        },
-        "MediaFileAttr": {
-            "pull": false,
-            "push": false,
-            "delete": false
-        },
-        "MediaFileAttrI18n": {
-            "pull": false,
-            "push": false,
-            "delete": false
-        },
-        "MediaFileI18n": {
-            "pull": false,
+            "pull": true,
             "push": false,
             "delete": false
         },
@@ -226,7 +206,7 @@
             "delete": false
         },
         "Payment": {
-            "pull": true,
+            "pull": false,
             "push": false,
             "delete": false
         },
@@ -238,7 +218,7 @@
         "Product2Category": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "ProductAttr": {
             "pull": true,
@@ -255,12 +235,12 @@
             "push": false,
             "delete": false
         },
-        "ProductCrossSelling": {
-            "pull": true,
-            "push": true,
-            "delete": true
-        },
         "ProductFileDownload": {
+            "pull": false,
+            "push": false,
+            "delete": false
+        },
+        "ProductFileDownloadI18n": {
             "pull": false,
             "push": false,
             "delete": false
@@ -268,12 +248,32 @@
         "ProductI18n": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "ProductInvisibility": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
+        },
+        "ProductMediaFile": {
+            "pull": false,
+            "push": false,
+            "delete": false
+        },
+        "ProductMediaFileAttr": {
+            "pull": false,
+            "push": false,
+            "delete": false
+        },
+        "ProductMediaFileAttrI18n": {
+            "pull": false,
+            "push": false,
+            "delete": false
+        },
+        "ProductMediaFileI18n": {
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "ProductPartsList": {
             "pull": false,
@@ -283,22 +283,22 @@
         "ProductPrice": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "ProductPriceItem": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "ProductSpecialPrice": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "ProductSpecialPriceItem": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "ProductSpecific": {
             "pull": false,
@@ -308,7 +308,7 @@
         "ProductStockLevel": {
             "pull": true,
             "push": true,
-            "delete": true
+            "delete": false
         },
         "ProductType": {
             "pull": false,
@@ -316,19 +316,19 @@
             "delete": false
         },
         "ProductVarCombination": {
+            "pull": true,
+            "push": true,
+            "delete": false
+        },
+        "ProductVariation": {
             "pull": false,
             "push": false,
             "delete": false
         },
-        "ProductVariation": {
-            "pull": true,
-            "push": true,
-            "delete": true
-        },
         "ProductVariationI18n": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "ProductVariationInvisibility": {
             "pull": false,
@@ -336,9 +336,9 @@
             "delete": false
         },
         "ProductVariationValue": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "ProductVariationValueDependency": {
             "pull": false,
@@ -346,14 +346,14 @@
             "delete": false
         },
         "ProductVariationValueExtraCharge": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "ProductVariationValueI18n": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "ProductVariationValueInvisibility": {
             "pull": false,
@@ -395,11 +395,6 @@
             "push": false,
             "delete": false
         },
-        "Statistic": {
-            "pull": false,
-            "push": false,
-            "delete": false
-        },
         "StatusChange": {
             "pull": false,
             "push": true,
@@ -426,14 +421,14 @@
             "delete": false
         },
         "Unit": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "UnitI18n": {
-            "pull": true,
-            "push": true,
-            "delete": true
+            "pull": false,
+            "push": false,
+            "delete": false
         },
         "Warehouse": {
             "pull": false,
@@ -448,7 +443,7 @@
         "config_group_images_supported": false,
         "customer_order_partially_payable": false,
         "free_field_supported": false,
-        "manufacturer_images_supported": false,
+        "manufacturer_images_supported": true,
         "needs_finish_call": false,
         "product_images_supported": true,
         "product_variation_value_images_supported": false,
@@ -456,7 +451,7 @@
         "specific_images_supported": false,
         "specific_value_images_supported": false,
         "var_combination_child_first": false,
-        "variation_combinations_supported": false,
-        "variation_products_supported": true
+        "variation_combinations_supported": true,
+        "variation_products_supported": false
     }
 }

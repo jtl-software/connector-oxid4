@@ -83,7 +83,7 @@ class Category extends BaseController
 		}		
 	}
 
-	public function postPush($data, $result)
+	public function finishPush($data, $result)
 	{
 		$categories = new \oxCategoryList();
 		$categories->updateCategoryTree();

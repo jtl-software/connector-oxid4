@@ -65,12 +65,61 @@ class ProductPrice extends BaseController
 		return $prices;
 	}
 
+    public function initPush($data) {
+        $id = $data[0]->getProductId()->getEndpoint();
+
+        if (!empty($id)) {
+            $this->db->execute('DELETE FROM oxprice2article WHERE OXARTID="' . $id . '"');
+            $this->db->execute('UPDATE oxarticles SET OXPRICEA=0, OXPRICEB=0,OXPRICEC=0 WHERE OXID="' . $id . '"');
+        }
+    }
+
     public function pushData($data)
     {
-        foreach ($data as $price) {
+        $id = $data->getProductId()->getEndpoint();
+
+        if (!empty($id)) {
             $group = $data->getCustomerGroupId()->getEndpoint();
+
+            $sPrices = array();
+
+            foreach ($data->getItems() as $item) {
+                if ($group === 'oxidcustomer') {
+                    if ($item->getQuantity() === 0) {
+                        $this->db->execute('UPDATE oxarticles SET OXPRICE='.$item->getNetPrice().' WHERE OXID="'.$id.'"');
+                    } else {
+                        $sPrices[] = array(
+                            'quantity' => $item->getQuantity(),
+                            'netPrice' => $item->getNetPrice()
+                        );
+                    }
+                }
+                elseif (in_array(strtoupper(substr($group, -1)), static::$groups)) {
+                    $this->db->execute('UPDATE oxarticles SET OXPRICE'.strtoupper(substr($group, -1)).'='.$item->getNetPrice().' WHERE OXID="'.$id.'"');
+                }
+            }
+
+            usort($sPrices, function($a, $b) {
+                if ($a['quantity'] == $b['quantity']) {
+                    return 0;
+                }
+                return ($a['quantity'] < $b['quantity']) ? -1 : 1;
+            });
+
+            for ($i = 0; $i < count($sPrices); $i++) {
+                $max = $i < count($sPrices)-1 ? $sPrices[$i+1]['quantity'] : 99999;
+                $sPrice = new \stdClass();
+                $sPrice->OXID = $this->utils->oxid();
+                $sPrice->OXSHOPID = 'oxbaseshop';
+                $sPrice->OXARTID = $id;
+                $sPrice->OXADDABS = $sPrices[$i]['netPrice'];
+                $sPrice->OXAMOUNT = $sPrices[$i]['quantity'];
+                $sPrice->OXAMOUNTTO = $max;
+
+                $this->db->insert($sPrice, 'oxprice2article');
+            }
         }
 
-        //return $data;
+        return $data;
     }
 }
