@@ -85,4 +85,10 @@ class Utils {
             return $state;
         }
     }
+
+	public function decode($field)
+	{
+		$oxConfig = \oxRegistry::getConfig();
+		return $oxConfig->getDecodeValueQuery($field);
+	}
 }

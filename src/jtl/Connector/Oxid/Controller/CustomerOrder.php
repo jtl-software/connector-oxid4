@@ -24,4 +24,14 @@ class CustomerOrder extends BaseController {
 
         return $return;
     }
+
+    public function getStats()
+    {
+        return $this->db->GetOne('
+			SELECT COUNT(*)
+			FROM oxorder o
+			LEFT JOIN jtl_connector_link l ON o.OXID = l.endpointId AND l.type = 4
+            WHERE l.hostId IS NULL
+        ');
+    }
 }

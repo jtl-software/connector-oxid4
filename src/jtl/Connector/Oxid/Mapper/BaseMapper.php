@@ -63,7 +63,7 @@ class BaseMapper
 		return $model;
 	}
 
-	public function toEndpoint($data)
+	public function toEndpoint($data, $customData = null)
 	{
 		$model = new $this->endpointModel();
 
@@ -73,7 +73,7 @@ class BaseMapper
 			$fnName = strtolower($endpoint);
 
 			if (method_exists($this, $fnName)) {
-				$value = $this->$fnName($data);
+				$value = $this->$fnName($data, $customData);
 			} else {
 				$getter = 'get'.ucfirst($host);
 
@@ -89,7 +89,9 @@ class BaseMapper
 					}
 				} elseif ($property->isIdentity()) {
 					$value = $value->getEndpoint();
-				}			
+				} elseif ($property->getType() == 'DateTime') {
+					$value = $value->format('Y-m-d H:i:s');
+				}
 			}
 			
 			$assign[$endpoint] = $value;			
