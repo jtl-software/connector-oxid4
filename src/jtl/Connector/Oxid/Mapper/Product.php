@@ -40,10 +40,40 @@ class Product extends BaseMapper
 	);
 
 	protected $push = array(
-		'OXID' => 'id'
+		'OXID' => 'id',
+		'OXMANUFACTURERID' => 'manufacturerId',
+		'OXPARENTID' => 'masterProductId',
+		'OXUNITNAME' => 'measurementUnitId',
+		'OXINSERT' => 'creationDate',
+		'OXEAN' => 'ean',
+		'OXHEIGHT' => 'height',
+		'OXACTIVE' => 'isActive',
+		'OXLENGTH' => 'length',
+		'OXMPN' => 'manufacturerNumber',
+		'OXUNITQUANTITY' => 'measurementQuantity',
+		'OXTIMESTAMP' => 'modified',
+		'OXDELIVERY' => 'nextAvailableInflowDate',
+		'OXWEIGHT' => 'productWeight',
+		'OXARTNUM' => 'sku',
+		'OXSORT' => 'sort',
+		'ProductStockLevel' => 'stockLevel',
+		'OXVAT' => null,
+		'OXWIDTH' => 'width',
+		'ProductAttr' => 'attributes',
+		'Product2Category' => 'categories',
+		'ProductI18n' => 'i18ns',
+		//'prices' => 'ProductPrice',
+		//'specialPrices' => 'ProductSpecialPrice',
+		//'variations' => 'ProductVariation',
+		'OXSHOPID' => null
 	);
 
-    protected function isMasterProduct($data)
+	protected function OXSHOPID($data)
+	{
+		return 'oxbaseshop';
+	}
+
+	protected function isMasterProduct($data)
     {
         return $data['combis'] > 0;
     }
@@ -69,5 +99,14 @@ class Product extends BaseMapper
 		}
 
 		return floatval($data['OXVAT']);
+	}
+
+	protected function OXVAT($data)
+	{
+		if ($data->getVat() !== floatval(\oxRegistry::getConfig()->getConfigParam('dDefaultVAT'))) {
+			return $data->getVat();
+		}
+
+		return null;
 	}
 }

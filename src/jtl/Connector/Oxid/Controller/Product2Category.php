@@ -17,4 +17,26 @@ class Product2Category extends BaseController
 		
 		return $return;		
 	}
+
+	public function pushData($data)
+	{
+		$pos = 0;
+
+		foreach ($data->getCategories() as $category) {
+			$id = $category->getCategoryId()->getEndpoint();
+
+			if (!empty($id)) {
+				$catObj = new \stdClass();
+				$catObj->OXID = $this->utils->oxid();
+				$catObj->OXOBJECTID = $data->getId()->getEndpoint();
+				$catObj->OXCATNID = $id;
+				$catObj->OXPOS = $pos;
+				$catObj->OXTIME = $pos;
+
+				$this->db->insert($catObj, 'oxobject2category');
+
+				$pos++;
+			}
+		}
+	}
 }

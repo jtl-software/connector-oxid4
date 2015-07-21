@@ -12,7 +12,7 @@ class ProductAttrI18n extends BaseController
 		foreach ($this->utils->getLanguages() as $column => $language) {
 			$column = $column == 0 ? '' : '_'.$column;
 
-			if (!empty($data['OXTITLE'.$column])) {
+			if (!empty($data['OXTITLE'.$column]) && !empty($data['OXVALUE'.$column])) {
 				$i18n = new ProductAttrI18nModel();
 				$i18n->setName($data['OXTITLE'.$column]);
 				$i18n->setValue($data['OXVALUE'.$column]);

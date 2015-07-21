@@ -8,7 +8,4 @@ class Product2Category extends BaseMapper
 		'categoryId' => 'OXCATNID',
 		'productId' => 'OXOBJECTID'
 	);
-
-	protected $push = array(
-	);	
 }

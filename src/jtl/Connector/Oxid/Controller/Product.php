@@ -29,15 +29,24 @@ class Product extends BaseController
 
 	public function pushData($data)
 	{
-		/*
-		$category = $this->mapper->toEndpoint($data);
-		
-		$id = $category->save();
+        $product = $this->mapper->toEndpoint($data);
+
+        $existingId = $data->getId()->getEndpoint();
+
+        if ($data->getIsMasterProduct() === true && !empty($existingId)) {
+            $vars = $this->db->getAll('SELECT COUNT(OXID) AS varCount, SUM(OXSTOCK) as totalStock FROM oxarticles WHERE OXPARENTID="'.$existingId.'"');
+
+            if (count($vars) > 0) {
+                $product->assign(array(
+                    'oxvarstock' => $vars[0]['totalStock'],
+                    'oxvarcount' => $vars[0]['varCount']
+                ));
+            }
+        }
+
+        $id = $product->save();
 		
 		$data->getId()->setEndpoint($id);
-
-		static::$idCache[$data->getId()->getHost()] = $id;
-		*/
 
 		return $data;
 	}
@@ -47,9 +56,27 @@ class Product extends BaseController
 		$id = $data->getId()->getEndpoint();
 
 		if (!empty($id)) {
-			$this->db->execute('DELETE FROM oxobject2attribute where OXOBJECTID="'.$id.'"');
-		}		
+			$this->db->execute('DELETE FROM oxobject2attribute WHERE OXOBJECTID="'.$id.'"');
+			$this->db->execute('DELETE FROM oxobject2category WHERE OXOBJECTID="'.$id.'"');
+			$this->db->execute('DELETE FROM oxobject2seodata WHERE OXOBJECTID="'.$id.'"');
+			$this->db->execute('DELETE FROM oxseo WHERE OXOBJECTID="'.$id.'"');
+		} else {
+            $data->getId()->setEndpoint($this->utils->oxid());
+        }
 	}
+
+    public function postPush($data, $model)
+    {
+        $parent = $data->getMasterProductId()->getEndpoint();
+
+        if (!empty($parent)) {
+            $vars = $this->db->getAll('SELECT COUNT(OXID) AS varCount, SUM(OXSTOCK) as totalStock FROM oxarticles WHERE OXPARENTID="'.$parent.'"');
+
+            if (count($vars) > 0) {
+                $this->db->execute('UPDATE oxarticles SET OXVARSTOCK='.$vars[0]['totalStock'].', OXVARCOUNT='.$vars[0]['varCount'].' WHERE OXID="'.$parent.'"');
+            }
+        }
+    }
 
 	public function deleteData($data)
 	{

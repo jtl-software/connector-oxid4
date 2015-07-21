@@ -6,7 +6,7 @@ use \jtl\Connector\Oxid\Controller\ProductAttrI18n as ProductAttrI18nController;
 
 class ProductAttr extends BaseController
 {	
-	public function pullData($data, $model)
+    public function pullData($data, $model)
 	{
 		$attributesResult = $this->db->getAll('
 			SELECT a.*, c.* 
@@ -33,15 +33,39 @@ class ProductAttr extends BaseController
 		return $attrs;			
 	}
 	
-	public function pushData($data, $model)
+	public function pushData($data)
 	{
 		foreach ($data->getAttributes() as $attr) {
-			$sql = new \stdClass;
-			$sql->OXID = $this->utils->oxid();
-			$sql->OXOBJECTID = $attr->getProductId()->getEndpoint(); 
-			$sql->OXATTRID = $attr->getId()->getEndpoint();
-			
-			$this->db->insert($sql, 'oxobject2attribute');			
-		}		
+			$attrObj = new \stdClass();
+			$valObj = new \stdClass();
+
+            foreach ($attr->getI18ns() as $i18n) {
+                $col = $this->utils->getLanguageId($i18n->getLanguageISO());
+                if ($col !== false) {
+                    $column = $col == 0 ? '' : '_'.$col;
+                    $attrObj->{OXTITLE.$column} = $i18n->getName();
+                    $valObj->{OXVALUE.$column} = $i18n->getValue();
+                }
+            }
+
+			$checkAttr = $this->db->getOne('SELECT OXID from oxattribute WHERE OXTITLE="'.$attrObj->OXTITLE.'"');
+
+			if ($checkAttr === false) {
+				$attrObj->OXID = $this->utils->oxid();
+				$attrObj->OXSHOPID = 'oxbaseshop';
+				$attrObj->OXDISPLAYINBASKET = 1;
+				$this->db->insert($attrObj, 'oxattribute');
+			} else {
+				$attrObj->OXID = $checkAttr;
+			}
+
+			$valObj->OXATTRID = $attrObj->OXID;
+			$valObj->OXOBJECTID = $attr->getProductId()->getEndpoint();
+			$valObj->OXID = $this->utils->oxid();
+
+            $this->db->insert($valObj, 'oxobject2attribute');
+		}
+
+		// also turn variation values into attributes on push?
 	}	
 }

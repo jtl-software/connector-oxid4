@@ -43,20 +43,41 @@ class ProductI18n extends BaseController
 	
 	public function pushData($data, $model)
 	{
-		foreach ($data->getI18ns() as $i18n) {
+        $extend = \oxNew('oxI18n');
+        $extend->setEnableMultilang(false);
+        $extend->init('oxartextends');
+        $extend->setId($data->getId()->getEndpoint());
+
+        foreach ($data->getI18ns() as $i18n) {
 			$id = $this->utils->getLanguageId($i18n->getLanguageISO());
 			
 			if ($id !== false) {
 				$column = $id == 0 ? '' : '_'.$id;
 
 				$model->addFieldName('oxtitle'.$column);
-				$model->addFieldName('oxlongdesc'.$column);
+				$model->addFieldName('oxshortdesc'.$column);
+                $model->addFieldName('oxsearchkeys'.$column);
 
 				$model->assign(array(
 					'oxtitle'.$column => $i18n->getName(),
-					'oxlongdesc'.$column => $i18n->getDescription()					
+					'oxshortdesc'.$column => $i18n->getShortDescription(),
+                    'oxsearchkeys'.$column => $data->getKeywords()
 				));
+
+                $extend->{oxartextends__oxlongdesc.$column} = new \oxField($i18n->getDescription());
+                $extend->{oxartextends__oxtags.$column} = new \oxField($data->getKeywords());
+
+                $seo = new \stdClass();
+                $seo->OXOBJECTID = $data->getId()->getEndpoint();
+                $seo->OXSHOPID = 'oxbaseshop';
+                $seo->OXLANG = $id;
+                $seo->OXKEYWORDS = $i18n->getMetaKeywords();
+                $seo->OXDESCRIPTION = $i18n->getMetaDescription();
+
+                $this->db->insert($seo, 'oxobject2seodata');
 			}
 		}
+
+        $extend->save();
 	}	
 }

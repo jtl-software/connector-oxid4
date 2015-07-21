@@ -90,7 +90,7 @@ class BaseMapper
 				} elseif ($property->isIdentity()) {
 					$value = $value->getEndpoint();
 				} elseif ($property->getType() == 'DateTime') {
-					$value = $value->format('Y-m-d H:i:s');
+					$value = $value === null ? '0000-00-00 00:00:00' : $value->format('Y-m-d H:i:s');
 				}
 			}
 			
