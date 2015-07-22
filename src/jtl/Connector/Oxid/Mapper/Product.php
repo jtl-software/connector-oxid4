@@ -35,7 +35,7 @@ class Product extends BaseMapper
 		'categories' => 'Product2Category',
 		'i18ns' => 'ProductI18n',
 		'prices' => 'ProductPrice',
-		'specialPrices' => 'ProductSpecialPrice',
+		//'specialPrices' => 'ProductSpecialPrice',
 		'variations' => 'ProductVariation'
 	);
 
@@ -62,11 +62,17 @@ class Product extends BaseMapper
 		'ProductAttr' => 'attributes',
 		'Product2Category' => 'categories',
 		'ProductI18n' => 'i18ns',
-		//'prices' => 'ProductPrice',
-		//'specialPrices' => 'ProductSpecialPrice',
-		//'variations' => 'ProductVariation',
-		'OXSHOPID' => null
+		'ProductPrice' => 'prices',
+		//'ProductSpecialPrice' => 'specialPrices',
+		'ProductVariation' => 'variations',
+		'OXSHOPID' => null,
+		'OXSTOCK' => null
 	);
+
+	protected function OXSTOCK($data)
+	{
+		return $data->getStockLevel()->getStockLevel();
+	}
 
 	protected function OXSHOPID($data)
 	{

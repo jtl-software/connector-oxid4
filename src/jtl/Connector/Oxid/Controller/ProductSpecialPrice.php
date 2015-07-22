@@ -23,4 +23,23 @@ class ProductSpecialPrice extends BaseController {
 
         return $specials;
     }
+
+    /*
+    public function pushData($data)
+    {
+        foreach ($data->getSpecialPrices() as $specialPrice) {
+            foreach ($specialPrice->getItems() as $item) {
+                if ($item->getCustomerGroupId()->getEndpoint() === 'oxidcustomer') {
+                    $itemD = new \stdClass();
+                    $itemD->OXID = $this->utils->oxid();
+                    $itemD->OXSHOPID = 'oxbaseshop';
+                    $itemD->OXACTIVEFROM = $specialPrice->getActiveFromDate() ? $specialPrice->getActiveFromDate()->format('Y-m-d H:i:s') : '0000-00-00 00:00:00';
+                    $itemD->OXACTIVETO = $specialPrice->getActiveUntilDate() ? $specialPrice->getActiveUntilDate()->format('Y-m-d H:i:s') : '0000-00-00 00:00:00';
+                    $itemD->OXTITLE = $itemD->OXID;
+                    $itemD->OXADDSUMTYPE = 'abs';
+                }
+            }
+        }
+    }
+    */
 }

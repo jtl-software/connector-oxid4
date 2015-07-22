@@ -76,6 +76,17 @@ class ProductPrice extends BaseController
 
     public function pushData($data)
     {
+        if (get_class($data) === 'jtl\Connector\Model\Product') {
+            foreach ($data->getPrices() as $priceData) {
+                $this->pushPrice($priceData);
+            }
+        } else {
+            $this->pushPrice($data);
+        }
+    }
+
+    private function pushPrice($data)
+    {
         $id = $data->getProductId()->getEndpoint();
 
         if (!empty($id)) {
@@ -119,7 +130,5 @@ class ProductPrice extends BaseController
                 $this->db->insert($sPrice, 'oxprice2article');
             }
         }
-
-        return $data;
     }
 }

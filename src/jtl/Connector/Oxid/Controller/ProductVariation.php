@@ -96,4 +96,69 @@ class ProductVariation extends BaseController
 
         return $return;
     }
+
+    public function pushData($data, $model)
+    {
+        if ($data->getIsMasterProduct() === true) {
+            $vars = array();
+
+            foreach ($data->getVariations() as $variation) {
+                foreach ($variation->getI18ns() as $i18n) {
+                    $col = $this->utils->getLanguageId($i18n->getLanguageISO());
+                    $vars[$col][] = $i18n->getName();
+                }
+            }
+
+            foreach ($this->utils->getLanguages() as $language) {
+                if (isset($vars[$language->column])) {
+                    $varStr = implode(' | ', $vars[$language->column]);
+                    $col = $language->column === 0 ? '' : '_' . $language->column;
+
+                    $model->addFieldName('oxvarname' . $col);
+                    $model->assign(array(
+                        'oxvarname' . $col => $varStr
+                    ));
+                }
+            }
+        } else {
+            $parent = $data->getMasterProductId()->getEndpoint();
+            if (!empty($parent)) {
+                $parentVars = $this->db->getOne('SELECT OXVARNAME FROM oxarticles WHERE OXID="'.$parent.'"');
+
+                if ($parentVars) {
+                    $parentVars = explode(' | ', $parentVars);
+                    foreach ($data->getVariations() as $variation) {
+                        foreach ($variation->getI18ns() as $varI18n) {
+                            if ($this->utils->getLanguageId($varI18n->getLanguageISO()) === 0) {
+                                $index = array_search($varI18n->getName(), $parentVars);
+                                break;
+                            }
+                        }
+
+                        if ($index !== false) {
+                            foreach ($variation->getValues() as $value) {
+                                foreach ($value->getI18ns() as $i18n) {
+                                    $col = $this->utils->getLanguageId($i18n->getLanguageISO());
+                                    $values[$col][$index] = $i18n->getName();
+                                }
+                            }
+                        }
+
+                    }
+
+                    foreach ($values as $column => $valueData) {
+                        ksort($valueData);
+
+                        $valueStr = implode(' | ', $valueData);
+                        $oCol = $column === 0 ? '' : '_' . $column;
+
+                        $model->addFieldName('oxvarselect' . $oCol);
+                        $model->assign(array(
+                            'oxvarselect' . $oCol => $valueStr
+                        ));
+                    }
+                }
+            }
+        }
+    }
 }

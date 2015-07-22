@@ -3,7 +3,9 @@ namespace jtl\Connector\Oxid\Controller;
 
 class Product extends BaseController
 {	
-	public function pullData($data, $model, $limit = null)
+	private static $cache = array();
+
+    public function pullData($data, $model, $limit = null)
 	{
 		$limit = 25;
 
@@ -60,8 +62,24 @@ class Product extends BaseController
 			$this->db->execute('DELETE FROM oxobject2category WHERE OXOBJECTID="'.$id.'"');
 			$this->db->execute('DELETE FROM oxobject2seodata WHERE OXOBJECTID="'.$id.'"');
 			$this->db->execute('DELETE FROM oxseo WHERE OXOBJECTID="'.$id.'"');
+            $this->db->execute('DELETE FROM oxprice2article WHERE OXARTID="'.$id.'"');
+            $this->db->execute('UPDATE oxarticles SET OXPRICEA=0, OXPRICEB=0,OXPRICEC=0 WHERE OXID="'.$id.'"');
 		} else {
             $data->getId()->setEndpoint($this->utils->oxid());
+        }
+
+        $parentHost = $data->getMasterProductId()->getHost();
+
+        if (!empty($parentHost)) {
+            $parentEndpoint = $data->getMasterProductId()->getEndpoint();
+
+            if (empty($parentEndpoint)) {
+                if (isset(static::$cache[$parentHost])) {
+                    $data->getMasterProductId()->setEndpoint(static::$cache[$data->getMasterProductId()->getHost()]);
+                } else {
+                    throw new \Exception('Child pushed with unknown parent');
+                }
+            }
         }
 	}
 
@@ -76,17 +94,25 @@ class Product extends BaseController
                 $this->db->execute('UPDATE oxarticles SET OXVARSTOCK='.$vars[0]['totalStock'].', OXVARCOUNT='.$vars[0]['varCount'].' WHERE OXID="'.$parent.'"');
             }
         }
+
+        static::$cache[$data->getId()->getHost()] = $data->getId()->getEndpoint();
+    }
+
+    public function finishPush()
+    {
+        array_map('unlink', glob(\oxRegistry::getConfig()->getConfigParam("sCompileDir").'*'));
     }
 
 	public function deleteData($data)
 	{
-		/*
-		$category = new \oxCategory();
+		$product = new \oxArticle();
 
-		if (!$category->delete($data->getId()->getEndpoint())) {
-			throw new \Exception('Error deleting category with id: '.$data->getId()->getEndpoint());
-		}
-		*/
+		if (!$product->delete($data->getId()->getEndpoint())) {
+			throw new \Exception('Error deleting product with id: '.$data->getId()->getEndpoint());
+		} else {
+            $this->postPush($data);
+        }
+
 		return $data;
 	}
 
