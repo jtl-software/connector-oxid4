@@ -206,7 +206,7 @@
             "delete": false
         },
         "Payment": {
-            "pull": false,
+            "pull": true,
             "push": false,
             "delete": false
         },
@@ -316,18 +316,18 @@
             "delete": false
         },
         "ProductVarCombination": {
-            "pull": true,
+            "pull": false,
             "push": true,
             "delete": false
         },
         "ProductVariation": {
-            "pull": false,
-            "push": false,
+            "pull": true,
+            "push": true,
             "delete": false
         },
         "ProductVariationI18n": {
-            "pull": false,
-            "push": false,
+            "pull": true,
+            "push": true,
             "delete": false
         },
         "ProductVariationInvisibility": {
@@ -336,8 +336,8 @@
             "delete": false
         },
         "ProductVariationValue": {
-            "pull": false,
-            "push": false,
+            "pull": true,
+            "push": true,
             "delete": false
         },
         "ProductVariationValueDependency": {
@@ -351,8 +351,8 @@
             "delete": false
         },
         "ProductVariationValueI18n": {
-            "pull": false,
-            "push": false,
+            "pull": true,
+            "push": true,
             "delete": false
         },
         "ProductVariationValueInvisibility": {
