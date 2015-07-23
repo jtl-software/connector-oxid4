@@ -9,6 +9,7 @@ $aModule = array(
     'author' => 'JTL Software GmbH',
     'url' => 'http://jtl-software.de',
     'email' => 'daniel.hoffmann@jtl-software.com',
+    'thumbnail' => 'application/views/logo.png',
     'extend' => array(
         'oxsession' => 'jtl-connector/application/extend/Session'
     ),
