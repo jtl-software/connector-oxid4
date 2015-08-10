@@ -15,7 +15,7 @@ class ProductPrice extends BaseController
 
     public function pullData($data, $model, $limit = null)
 	{
-		$prices = array();
+        $prices = array();
 
         $result = $this->db->getAll('SELECT * FROM oxprice2article WHERE OXARTID="'.$data['OXID'].'"');
 
@@ -62,6 +62,16 @@ class ProductPrice extends BaseController
             }
         }
 
+        $isNetPrices = \oxRegistry::getConfig()->getShopConfVar('blEnterNetPrice');
+
+        if (!$isNetPrices) {
+            foreach ($prices as $price) {
+                foreach ($price->getItems() as &$item) {
+                    $item->setNetPrice(floatval(($item->getNetprice() / (100 + $model->getVat())) * 100));
+                }
+            }
+        }
+
 		return $prices;
 	}
 
@@ -90,11 +100,23 @@ class ProductPrice extends BaseController
         $id = $data->getProductId()->getEndpoint();
 
         if (!empty($id)) {
+            $vat = $this->db->getOne('SELECT OXVAT FROM oxarticles WHERE OXID="'.$id.'"');
+
+            if (is_null($vat)) {
+                $vat = floatval(\oxRegistry::getConfig()->getConfigParam('dDefaultVAT'));
+            }
+
+            $isNetPrices = \oxRegistry::getConfig()->getShopConfVar('blEnterNetPrice');
+
             $group = $data->getCustomerGroupId()->getEndpoint();
 
             $sPrices = array();
 
             foreach ($data->getItems() as $item) {
+                if (!$isNetPrices) {
+                    $item->setNetPrice(floatval(($item->getNetprice() / 100) * (100 + $vat)));
+                }
+
                 if ($group === 'oxidcustomer' || empty($group)) {
                     if ($item->getQuantity() === 0) {
                         $this->db->execute('UPDATE oxarticles SET OXPRICE='.$item->getNetPrice().' WHERE OXID="'.$id.'"');

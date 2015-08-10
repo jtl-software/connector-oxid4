@@ -62,7 +62,6 @@ class Product extends BaseMapper
 		'ProductAttr' => 'attributes',
 		'Product2Category' => 'categories',
 		'ProductI18n' => 'i18ns',
-		//'ProductPrice' => 'prices',
 		//'ProductSpecialPrice' => 'specialPrices',
 		'ProductVariation' => 'variations',
 		'OXSHOPID' => null,
