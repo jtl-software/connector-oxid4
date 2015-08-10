@@ -56,4 +56,18 @@ class CrossSelling extends BaseController {
 
         return $data;
     }
+
+    public function getStats()
+    {
+        return $this->db->getOne('
+            SELECT COUNT(*)
+            FROM (
+              SELECT c.*
+              FROM oxobject2article c
+              LEFT JOIN jtl_connector_link l ON c.OXARTICLENID = l.endpointId AND l.type = 1024
+              WHERE l.hostId IS NULL
+              GROUP BY c.OXARTICLENID
+            ) c
+        ');
+    }
 }

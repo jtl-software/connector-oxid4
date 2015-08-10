@@ -1,6 +1,9 @@
 <?php
 namespace jtl\Connector\Oxid\Controller;
 
+use jtl\Connector\Model\Identity;
+use jtl\Connector\Oxid\Controller\ProductPrice;
+
 class Product extends BaseController
 {	
 	private static $cache = array();
@@ -85,7 +88,17 @@ class Product extends BaseController
 
     public function postPush($data, $model)
     {
+        $id = $data->getId()->getEndpoint();
         $parent = $data->getMasterProductId()->getEndpoint();
+
+        if (!empty($id)) {
+            foreach ($data->getPrices() as $priceObj) {
+                $priceObj->setProductId(new Identity($id));
+            }
+
+            $price = new ProductPrice();
+            $price->pushData($data);
+        }
 
         if (!empty($parent)) {
             $vars = $this->db->getAll('SELECT COUNT(OXID) AS varCount, SUM(OXSTOCK) as totalStock FROM oxarticles WHERE OXPARENTID="'.$parent.'"');
@@ -108,7 +121,7 @@ class Product extends BaseController
 		$product = new \oxArticle();
 
 		if (!$product->delete($data->getId()->getEndpoint())) {
-			throw new \Exception('Error deleting product with id: '.$data->getId()->getEndpoint());
+			//throw new \Exception('Error deleting product with id: '.$data->getId()->getEndpoint());
 		} else {
             $this->postPush($data);
         }

@@ -31,7 +31,7 @@ class Customer extends BaseController
 		$endpointModel = $this->mapper->toEndpoint($data);
 		
 		if (!$id = $endpointModel->save()) {
-			throw new \Exception('Error saving customer');
+			//throw new \Exception('Error saving customer');
 		}
 
 		$data->getId()->setEndpoint($id);
@@ -44,7 +44,7 @@ class Customer extends BaseController
 		$user = new \oxUser();
 
 		if (!$user->delete($data->getId()->getEndpoint())) {
-			throw new \Exception('Error deleting customer with id: '.$data->getId()->getEndpoint());
+			//throw new \Exception('Error deleting customer with id: '.$data->getId()->getEndpoint());
 		}
 
 		return $data;

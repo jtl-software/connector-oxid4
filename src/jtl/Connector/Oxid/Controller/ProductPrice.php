@@ -95,7 +95,7 @@ class ProductPrice extends BaseController
             $sPrices = array();
 
             foreach ($data->getItems() as $item) {
-                if ($group === 'oxidcustomer') {
+                if ($group === 'oxidcustomer' || empty($group)) {
                     if ($item->getQuantity() === 0) {
                         $this->db->execute('UPDATE oxarticles SET OXPRICE='.$item->getNetPrice().' WHERE OXID="'.$id.'"');
                     } else {
