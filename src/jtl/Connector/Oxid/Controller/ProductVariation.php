@@ -23,12 +23,13 @@ class ProductVariation extends BaseController
             SELECT c.OXVARSELECT, c.OXVARSELECT_1, c.OXVARSELECT_2, c.OXVARSELECT_3, a.OXVARNAME, a.OXVARNAME_1, a.OXVARNAME_2, a.OXVARNAME_3
             FROM oxarticles c
             LEFT JOIN oxarticles a ON a.OXID = c.OXPARENTID
-            WHERE '.$where);
+            WHERE a.OXVARNAME IS NOT NULL AND '.$where);
 
         $return = array();
         $variations = array();
 
         foreach ($result as $combi) {
+
             $varNames = explode(' | ', $combi['OXVARNAME']);
             $values = explode(' | ', $combi['OXVARSELECT']);
 
