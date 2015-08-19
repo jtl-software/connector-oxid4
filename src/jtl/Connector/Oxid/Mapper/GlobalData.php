@@ -1,8 +1,6 @@
 <?php
 namespace jtl\Connector\Oxid\Mapper;
 
-use \jtl\Connector\Oxid\Mapper\BaseMapper;
-
 class GlobalData extends BaseMapper
 {
 	protected $pull = array(
@@ -10,6 +8,7 @@ class GlobalData extends BaseMapper
 		'currencies' => 'Currency',
 		'measurementUnits' => 'MeasurementUnit',
         'taxRates' => 'TaxRate',
-        'customerGroups' => 'CustomerGroup'
+        'customerGroups' => 'CustomerGroup',
+		'shippingMethods' => 'ShippingMethod'
 	);
 }

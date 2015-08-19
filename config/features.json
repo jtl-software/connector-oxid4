@@ -160,6 +160,11 @@
             "push": false,
             "delete": false
         },
+        "DeliveryNoteTrackingList": {
+            "pull": false,
+            "push": false,
+            "delete": false
+        },
         "FileUpload": {
             "pull": false,
             "push": false,
@@ -372,6 +377,11 @@
         },
         "ShippingClass": {
             "pull": false,
+            "push": false,
+            "delete": false
+        },
+        "ShippingMethod": {
+            "pull": true,
             "push": false,
             "delete": false
         },
