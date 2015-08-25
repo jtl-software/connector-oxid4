@@ -53,6 +53,12 @@ class Product extends BaseController
 		
 		$data->getId()->setEndpoint($id);
 
+        $cats = new Product2Category();
+        $cats->pushData($data);
+
+        $attrs = new ProductAttr();
+        $attrs->pushData($data);
+
 		return $data;
 	}
 

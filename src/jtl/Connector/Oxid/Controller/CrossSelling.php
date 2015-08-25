@@ -33,12 +33,15 @@ class CrossSelling extends BaseController {
 
             foreach ($data->getItems() as $item) {
                 foreach ($item->getProductIds() as $product) {
-                    $obj = new \stdClass();
-                    $obj->OXID = $this->utils->oxid();
-                    $obj->OXOBJECTID = $product->getEndpoint();
-                    $obj->OXARTICLENID = $id;
+                    $crossId = $product->getEndpoint();
+                    if (!empty($crossId)) {
+                        $obj = new \stdClass();
+                        $obj->OXID = $this->utils->oxid();
+                        $obj->OXOBJECTID = $crossId;
+                        $obj->OXARTICLENID = $id;
 
-                    $this->db->insert($obj, 'oxobject2article');
+                        $this->db->insert($obj, 'oxobject2article');
+                    }
                 }
             }
         }

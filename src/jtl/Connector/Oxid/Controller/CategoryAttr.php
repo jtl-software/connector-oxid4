@@ -36,12 +36,33 @@ class CategoryAttr extends BaseController
 	public function pushData($data, $model)
 	{
 		foreach ($data->getAttributes() as $attr) {
-			$sql = new \stdClass;
-			$sql->OXID = $this->utils->oxid();
-			$sql->OXOBJECTID = $attr->getCategoryId()->getEndpoint(); 
-			$sql->OXATTRID = $attr->getId()->getEndpoint();
-			
-			$this->db->insert($sql, 'oxcategory2attribute');			
-		}		
+			$attrObj = new \stdClass();
+			$valObj = new \stdClass();
+
+			foreach ($attr->getI18ns() as $i18n) {
+				$col = $this->utils->getLanguageId($i18n->getLanguageISO());
+				if ($col !== false) {
+					$column = $col == 0 ? '' : '_'.$col;
+					$attrObj->{OXTITLE.$column} = $i18n->getName();
+                }
+			}
+
+			$checkAttr = $this->db->getOne('SELECT OXID from oxattribute WHERE OXTITLE="'.$attrObj->OXTITLE.'"');
+
+			if ($checkAttr === false) {
+				$attrObj->OXID = $this->utils->oxid();
+				$attrObj->OXSHOPID = 'oxbaseshop';
+				$attrObj->OXDISPLAYINBASKET = 1;
+				$this->db->insert($attrObj, 'oxattribute');
+			} else {
+				$attrObj->OXID = $checkAttr;
+			}
+
+			$valObj->OXATTRID = $attrObj->OXID;
+			$valObj->OXOBJECTID = $data->getId()->getEndpoint();
+			$valObj->OXID = $this->utils->oxid();
+
+			$this->db->insert($valObj, 'oxcategory2attribute');
+		}
 	}
 }

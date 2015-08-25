@@ -20,8 +20,7 @@ class Category extends BaseMapper
 		'OXACTIVE' => 'isActive',
 		'OXSORT' => 'sort',
 		'OXSHOPID' => null,
-		'CategoryI18n' => 'i18ns',
-		'CategoryAttr' => 'attributes'
+		'CategoryI18n' => 'i18ns'
 	);
 
 	protected function oxshopid($data)

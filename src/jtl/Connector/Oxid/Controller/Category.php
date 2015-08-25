@@ -43,6 +43,9 @@ class Category extends BaseController
 
 		$this->addMeta($data);
 
+		$attrs = new CategoryAttr();
+		$attrs->pushData($data);
+
 		return $data;
 	}
 

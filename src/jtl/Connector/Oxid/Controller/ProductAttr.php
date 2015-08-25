@@ -60,7 +60,7 @@ class ProductAttr extends BaseController
 			}
 
 			$valObj->OXATTRID = $attrObj->OXID;
-			$valObj->OXOBJECTID = $attr->getProductId()->getEndpoint();
+			$valObj->OXOBJECTID = $data->getId()->getEndpoint();
 			$valObj->OXID = $this->utils->oxid();
 
             $this->db->insert($valObj, 'oxobject2attribute');
