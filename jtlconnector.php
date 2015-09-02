@@ -2,9 +2,6 @@
 class JTLConnector
 { 
 	public function __construct() {
-		error_reporting(E_ALL ^ E_NOTICE);
-        ini_set('display_errors', 1);
-
 		require_once __DIR__."/vendor/autoload.php";
 		
 		defined('CONNECTOR_DIR') || define("CONNECTOR_DIR", __DIR__);
