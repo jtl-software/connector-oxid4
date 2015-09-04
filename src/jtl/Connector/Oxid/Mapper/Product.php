@@ -13,6 +13,8 @@ class Product extends BaseMapper
 		'manufacturerId' => 'OXMANUFACTURERID',
 		'masterProductId' => 'OXPARENTID',
 		'measurementUnitId' => 'OXUNITNAME',
+		'basePriceUnitId' => 'OXUNITNAME',
+		'basePriceFactor' => null,
 		'creationDate' => 'OXINSERT',
 		'ean' => 'OXEAN',
 		'height' => 'OXHEIGHT',
@@ -23,6 +25,7 @@ class Product extends BaseMapper
 		'manufacturerNumber' => 'OXMPN',
 		'measurementQuantity' => 'OXUNITQUANTITY',
 		'measurementUnitCode' => null,
+		'basePriceUnitCode' => null,
 		'modified' => 'OXTIMESTAMP',
 		'nextAvailableInflowDate' => 'OXDELIVERY',
 		'productWeight' => 'OXWEIGHT',
@@ -43,7 +46,7 @@ class Product extends BaseMapper
 		'OXID' => 'id',
 		'OXMANUFACTURERID' => 'manufacturerId',
 		'OXPARENTID' => 'masterProductId',
-		'OXUNITNAME' => 'measurementUnitId',
+		'OXUNITNAME' => null,
 		'OXINSERT' => 'creationDate',
 		'OXEAN' => 'ean',
 		'OXHEIGHT' => 'height',
@@ -59,8 +62,6 @@ class Product extends BaseMapper
 		'ProductStockLevel' => 'stockLevel',
 		'OXVAT' => null,
 		'OXWIDTH' => 'width',
-		//'ProductAttr' => 'attributes',
-		//'Product2Category' => 'categories',
 		'ProductI18n' => 'i18ns',
 		//'ProductSpecialPrice' => 'specialPrices',
 		'ProductVariation' => 'variations',
@@ -78,12 +79,27 @@ class Product extends BaseMapper
 		return 'oxbaseshop';
 	}
 
+    protected function OXUNITNAME($data)
+    {
+        return $data->getBasePriceFactor().' '.$data->getBasePriceUnitName();
+    }
+
 	protected function isMasterProduct($data)
     {
         return $data['combis'] > 0;
     }
 
 	protected function measurementUnitCode($data)
+	{
+		return substr(strrchr($data['OXUNITNAME'], "_"), 1);
+	}
+
+	protected function basePriceFactor($data)
+	{
+		return 1;
+	}
+
+	protected function basePriceUnitCode($data)
 	{
 		return substr(strrchr($data['OXUNITNAME'], "_"), 1);
 	}

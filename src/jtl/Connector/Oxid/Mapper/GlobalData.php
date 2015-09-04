@@ -9,6 +9,7 @@ class GlobalData extends BaseMapper
 		'measurementUnits' => 'MeasurementUnit',
         'taxRates' => 'TaxRate',
         'customerGroups' => 'CustomerGroup',
-		'shippingMethods' => 'ShippingMethod'
+		'shippingMethods' => 'ShippingMethod',
+		'crossSellingGroups' => 'CrossSellingGroup'
 	);
 }

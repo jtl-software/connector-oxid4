@@ -8,13 +8,9 @@ class JTLConnector
 				
 		$connector = \jtl\Connector\Oxid\Oxid::getInstance();
 	
-		try {
-		    $application = \jtl\Connector\Application\Application::getInstance();
-		    $application->register($connector);
-		    $application->run();
-		} catch (\Exception $exc) {
-		    $connector->exceptionHandler($exc);
-		}				
+		$application = \jtl\Connector\Application\Application::getInstance();
+		$application->register($connector);
+		$application->run();
 	}
 
 	public function onActivate()

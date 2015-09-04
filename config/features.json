@@ -61,19 +61,19 @@
             "delete": true
         },
         "CrossSellingGroup": {
-            "pull": false,
+            "pull": true,
             "push": false,
             "delete": false
         },
         "CrossSellingGroupI18n": {
-            "pull": false,
+            "pull": true,
             "push": false,
             "delete": false
         },
         "CrossSellingItem": {
             "pull": true,
             "push": true,
-            "delete": false
+            "delete": true
         },
         "Currency": {
             "pull": true,
@@ -92,7 +92,7 @@
         },
         "CustomerGroup": {
             "pull": true,
-            "push": false,
+            "push": true,
             "delete": false
         },
         "CustomerGroupAttr": {

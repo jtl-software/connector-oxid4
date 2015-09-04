@@ -12,5 +12,9 @@ class GlobalData extends BaseController
 
 	public function pushData($data)
 	{
+		$customerGroupController = new CustomerGroup();
+        $customerGroupController->pushData($data);
+
+        return $data;
 	}
 }

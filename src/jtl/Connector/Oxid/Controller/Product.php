@@ -73,6 +73,16 @@ class Product extends BaseController
 			$this->db->execute('DELETE FROM oxseo WHERE OXOBJECTID="'.$id.'"');
             $this->db->execute('DELETE FROM oxprice2article WHERE OXARTID="'.$id.'"');
             $this->db->execute('UPDATE oxarticles SET OXPRICEA=0, OXPRICEB=0,OXPRICEC=0 WHERE OXID="'.$id.'"');
+
+            //$this->db->execute('DELETE FROM oxobject2discount WHERE OXOBJECTID="'.$id.'"');
+            /*
+            $discounts = $this->db->getAll('SELECT OXDISCOUNTID FROM oxobject2discount WHERE OXOBJECTID="'.$id.'"');
+
+            foreach ($discounts as $discount) {
+                $this->db->execute('DELETE FROM oxdiscount WHERE OXID="'.$discount['OXDISCOUNTID'].'"');
+                $this->db->execute('DELETE FROM oxobject2discount WHERE OXDISCOUNTID="'.$discount['OXDISCOUNTID'].'"');
+            }
+            */
 		} else {
             $data->getId()->setEndpoint($this->utils->oxid());
         }

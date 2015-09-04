@@ -35,8 +35,13 @@ class ProductPrice extends BaseController
         foreach ($result as $itemData) {
 			$item = new ProductPriceItemModel();
 			$item->setProductPriceId($price->getId());
-			$item->setNetPrice(floatval($itemData['OXADDABS']));
 			$item->setQuantity(intval($itemData['OXAMOUNT']));
+
+            if ($itemData['OXADDABS'] > 0 && $itemData['OXADDPERC'] == 0) {
+                $item->setNetPrice(floatval($itemData['OXADDABS']));
+            } elseif($itemData['OXADDPERC'] > 0 && $itemData['OXADDABS'] == 0) {
+                $item->setNetPrice(floatval($data['OXPRICE']) - (floatval($data['OXPRICE']) / 100 * floatval($itemData['OXADDPERC'])));
+            }
 
 			$items[] = $item;
 		}
@@ -98,6 +103,7 @@ class ProductPrice extends BaseController
     private function pushPrice($data)
     {
         $id = $data->getProductId()->getEndpoint();
+        $mainPrice = null;
 
         if (!empty($id)) {
             $vat = $this->db->getOne('SELECT OXVAT FROM oxarticles WHERE OXID="'.$id.'"');
@@ -120,6 +126,7 @@ class ProductPrice extends BaseController
                 if ($group === 'oxidcustomer' || empty($group)) {
                     if ($item->getQuantity() === 0) {
                         $this->db->execute('UPDATE oxarticles SET OXPRICE='.$item->getNetPrice().' WHERE OXID="'.$id.'"');
+                        $mainPrice = $item->getNetPrice();
                     } else {
                         $sPrices[] = array(
                             'quantity' => $item->getQuantity(),
@@ -139,17 +146,21 @@ class ProductPrice extends BaseController
                 return ($a['quantity'] < $b['quantity']) ? -1 : 1;
             });
 
-            for ($i = 0; $i < count($sPrices); $i++) {
-                $max = $i < count($sPrices)-1 ? $sPrices[$i+1]['quantity'] : 99999;
-                $sPrice = new \stdClass();
-                $sPrice->OXID = $this->utils->oxid();
-                $sPrice->OXSHOPID = 'oxbaseshop';
-                $sPrice->OXARTID = $id;
-                $sPrice->OXADDABS = $sPrices[$i]['netPrice'];
-                $sPrice->OXAMOUNT = $sPrices[$i]['quantity'];
-                $sPrice->OXAMOUNTTO = $max;
+            if ($mainPrice) {
+                for ($i = 0; $i < count($sPrices); $i++) {
+                    $max = $i < count($sPrices) - 1 ? $sPrices[$i + 1]['quantity'] : 99999;
+                    $sPrice = new \stdClass();
+                    $sPrice->OXID = $this->utils->oxid();
+                    $sPrice->OXSHOPID = 'oxbaseshop';
+                    $sPrice->OXARTID = $id;
+                    //$sPrice->OXADDABS = $sPrices[$i]['netPrice'];
+                    $sPrice->OXADDABS = 0;
+                    $sPrice->OXADDPERC = 100 - (100 / $mainPrice * $sPrices[$i]['netPrice']);
+                    $sPrice->OXAMOUNT = $sPrices[$i]['quantity'];
+                    $sPrice->OXAMOUNTTO = $max;
 
-                $this->db->insert($sPrice, 'oxprice2article');
+                    $this->db->insert($sPrice, 'oxprice2article');
+                }
             }
         }
     }
