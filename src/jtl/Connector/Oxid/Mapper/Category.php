@@ -4,6 +4,7 @@ namespace jtl\Connector\Oxid\Mapper;
 class Category extends BaseMapper
 {
 	protected $endpointModel = '\oxCategory';
+	protected $id = 'id';
 
 	protected $pull = array(
 		'id' => 'OXID',

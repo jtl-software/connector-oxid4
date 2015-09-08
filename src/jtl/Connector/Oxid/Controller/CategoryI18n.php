@@ -29,7 +29,12 @@ class CategoryI18n extends BaseController
 				$metaDesc = $seoEncoder->getMetaData($data['OXID'], 'oxdescription', null, $id);
 				if ($metaDesc) {
 					$i18n->setMetaDescription($metaDesc);
-				}				
+				}
+
+				$seoUrl = $this->db->getOne('SELECT OXSEOURL FROM oxseo WHERE OXOBJECTID="'.$data['OXID'].'" && OXTYPE="oxcategory" && OXLANG='.$id);
+				if ($seoUrl) {
+					$i18n->setUrlPath($seoUrl);
+				}
 
 				$i18ns[] = $i18n;
 			}

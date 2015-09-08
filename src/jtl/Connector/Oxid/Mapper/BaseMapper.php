@@ -65,7 +65,19 @@ class BaseMapper
 
 	public function toEndpoint($data, $customData = null)
 	{
-		$model = new $this->endpointModel();
+        $model = new $this->endpointModel();
+
+		if (isset($this->id)) {
+            $idGetter = 'get'.ucfirst($this->id);
+
+            if (method_exists($data, $idGetter)) {
+                $existingId = $data->$idGetter()->getEndpoint();
+
+                if ($existingId) {
+                    $model->load($existingId);
+                }
+            }
+        }
 
 		$assign = array();
 
