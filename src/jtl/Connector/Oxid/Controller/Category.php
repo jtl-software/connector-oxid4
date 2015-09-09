@@ -35,8 +35,10 @@ class Category extends BaseController
 
 		$category = $this->mapper->toEndpoint($data);
 
-		$id = $category->save();
-		
+        $category->save();
+
+        $id = $category->save();
+
 		$data->getId()->setEndpoint($id);
 
 		static::$idCache[$data->getId()->getHost()] = $id;
@@ -71,7 +73,7 @@ class Category extends BaseController
 				$langId = $this->utils->getLanguageId($i18n->getLanguageISO());
 				
 				if ($langId !== false) {
-					$encoder->addSeoEntry($id, 'oxbaseshop', $langId, null, $i18n->getUrlPath(), 'oxcategory', 'index.php?cl=alist&amp;cnid='.$id, $i18n->getMetaKeywords(), $i18n->getMetaDescription());
+					$encoder->addSeoEntry($id, 'oxbaseshop', $langId, 'index.php?cl=alist&amp;cnid='.$id, $i18n->getUrlPath(), 'oxcategory', null, $i18n->getMetaKeywords(), $i18n->getMetaDescription());
 				}
 			}		
 		}

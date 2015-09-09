@@ -7,6 +7,7 @@ use \jtl\Connector\Model\Identity;
 class Product extends BaseMapper
 {
 	protected $endpointModel = '\oxArticle';
+	protected $id = 'id';
 
 	protected $pull = array(
 		'id' => 'OXID',

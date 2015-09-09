@@ -10,17 +10,19 @@ class BaseMapper
 	protected $utils = null;
 	private $model = null;
 	private $type;
-	protected $endpointModel = null;
+    protected $endpointModel = null;
 
 	public function __construct()
 	{
-		$reflect = new \ReflectionClass($this);
+        $reflect = new \ReflectionClass($this);
 		$typeClass = "\\jtl\\Connector\\Type\\{$reflect->getShortName()}";
 
-		$this->db = DB::getInstance();
+		$this->db = Db::getInstance();
 		$this->utils = \jtl\Connector\Oxid\Utils\Utils::getInstance();
-        $this->model = "\\jtl\\Connector\\Model\\{$reflect->getShortName()}";   
-        $this->type = new $typeClass();        
+
+        $this->model = "\\jtl\\Connector\\Model\\{$reflect->getShortName()}";
+
+        $this->type = new $typeClass();
 	}
 
 	public function toHost($data)

@@ -6,6 +6,7 @@ use \jtl\Connector\Oxid\Mapper\BaseMapper;
 class Manufacturer extends BaseMapper
 {
 	protected $endpointModel = '\oxManufacturer';
+	protected $id = 'id';
 
 	protected $pull = array(
 		'id' => 'OXID',

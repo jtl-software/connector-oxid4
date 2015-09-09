@@ -70,9 +70,9 @@ class ProductPrice extends BaseController
         $isNetPrices = \oxRegistry::getConfig()->getShopConfVar('blEnterNetPrice');
 
         if (!$isNetPrices) {
-            foreach ($prices as $price) {
-                foreach ($price->getItems() as &$item) {
-                    $item->setNetPrice(floatval(($item->getNetprice() / (100 + $model->getVat())) * 100));
+            foreach ($prices as $priceData) {
+                foreach ($priceData->getItems() as $itemData) {
+                    $itemData->setNetPrice(floatval(($itemData->getNetprice() / (100 + $model->getVat())) * 100));
                 }
             }
         }
