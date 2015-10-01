@@ -77,7 +77,7 @@
         },
         "Currency": {
             "pull": true,
-            "push": false,
+            "push": true,
             "delete": false
         },
         "Customer": {

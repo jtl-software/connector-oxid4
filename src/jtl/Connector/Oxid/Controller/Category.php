@@ -39,6 +39,8 @@ class Category extends BaseController
 
         $id = $category->save();
 
+        \oxRegistry::get("oxSeoEncoderCategory")->markRelatedAsExpired($category);
+
 		$data->getId()->setEndpoint($id);
 
 		static::$idCache[$data->getId()->getHost()] = $id;
@@ -92,6 +94,8 @@ class Category extends BaseController
 	{
 		$categories = new \oxCategoryList();
 		$categories->updateCategoryTree();
+
+        array_map('unlink', glob(\oxRegistry::getConfig()->getConfigParam("sCompileDir").'oxpec_oxcategory*.*'));
 	}
 
 	public function getStats()

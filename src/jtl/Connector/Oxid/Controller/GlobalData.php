@@ -15,6 +15,9 @@ class GlobalData extends BaseController
 		$customerGroupController = new CustomerGroup();
         $customerGroupController->pushData($data);
 
+        $currencyController = new Currency();
+        $currencyController->pushData($data);
+
         return $data;
 	}
 }

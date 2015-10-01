@@ -15,7 +15,7 @@ class Product extends BaseMapper
 		'masterProductId' => 'OXPARENTID',
 		'measurementUnitId' => 'OXUNITNAME',
 		'basePriceUnitId' => 'OXUNITNAME',
-		'basePriceFactor' => null,
+		'basePriceQuantity' => null,
 		'creationDate' => 'OXINSERT',
 		'ean' => 'OXEAN',
 		'height' => 'OXHEIGHT',
@@ -27,6 +27,7 @@ class Product extends BaseMapper
 		'measurementQuantity' => 'OXUNITQUANTITY',
 		'measurementUnitCode' => null,
 		'basePriceUnitCode' => null,
+        'basePriceUnitName' => null,
 		'modified' => 'OXTIMESTAMP',
 		'nextAvailableInflowDate' => 'OXDELIVERY',
 		'productWeight' => 'OXWEIGHT',
@@ -40,7 +41,9 @@ class Product extends BaseMapper
 		'i18ns' => 'ProductI18n',
 		'prices' => 'ProductPrice',
 		//'specialPrices' => 'ProductSpecialPrice',
-		'variations' => 'ProductVariation'
+		'variations' => 'ProductVariation',
+		'considerStock' => null,
+        'recommendedRetailPrice' => 'OXTPRICE'
 	);
 
 	protected $push = array(
@@ -67,8 +70,14 @@ class Product extends BaseMapper
 		//'ProductSpecialPrice' => 'specialPrices',
 		'ProductVariation' => 'variations',
 		'OXSHOPID' => null,
-		'OXSTOCK' => null
+		'OXSTOCK' => null,
+        'OXTPRICE' => 'recommendedRetailPrice'
 	);
+
+	protected function considerStock($data)
+	{
+		return \oxRegistry::getConfig()->getConfigParam('blUseStock');
+	}
 
 	protected function OXSTOCK($data)
 	{
@@ -82,7 +91,7 @@ class Product extends BaseMapper
 
     protected function OXUNITNAME($data)
     {
-        return $data->getBasePriceFactor().' '.$data->getBasePriceUnitName();
+        return $data->getBasePriceUnitName();
     }
 
 	protected function isMasterProduct($data)
@@ -95,7 +104,7 @@ class Product extends BaseMapper
 		return substr(strrchr($data['OXUNITNAME'], "_"), 1);
 	}
 
-	protected function basePriceFactor($data)
+	protected function basePriceQuantity($data)
 	{
 		return 1;
 	}
@@ -104,6 +113,11 @@ class Product extends BaseMapper
 	{
 		return substr(strrchr($data['OXUNITNAME'], "_"), 1);
 	}
+
+    protected function basePriceUnitName($data)
+    {
+        return substr(strrchr($data['OXUNITNAME'], "_"), 1);
+    }
 
 	protected function stockLevel($data)
 	{
