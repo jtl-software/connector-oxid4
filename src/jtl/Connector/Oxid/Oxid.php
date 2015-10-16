@@ -9,8 +9,6 @@ use \jtl\Connector\Base\Connector as BaseConnector;
 use \jtl\Connector\Core\Rpc\Error as Error;
 use \jtl\Connector\Core\Http\Response;
 use \jtl\Connector\Oxid\Mapper\PrimaryKeyMapper;
-use \jtl\Connector\Core\Config\Config;
-use \jtl\Connector\Core\Config\Loader\System as ConfigSystem;
 use \jtl\Connector\Result\Action;
 use \jtl\Connector\Oxid\Auth\TokenLoader;
 use \jtl\Connector\Oxid\Checksum\ChecksumLoader;
@@ -23,40 +21,9 @@ class Oxid extends BaseConnector
 
     public function initialize()
     {
-        $this->initConnectorConfig();
-
         $this->setPrimaryKeyMapper(new PrimaryKeyMapper());
         $this->setTokenLoader(new TokenLoader());
         $this->setChecksumLoader(new ChecksumLoader());
-    }
-
-    protected function initConnectorConfig()
-    {      
-        $session = new SessionHelper("oxidConnector");
-
-        $config = null;
-
-        if (isset($session->config)) {
-            $config = $session->config;
-        }
-
-        if (empty($config)) {
-            if (!is_null($this->config)) {
-                $config = $this->getConfig();
-            }
-
-            if (empty($config)) {
-                $config = new Config(array(
-                    new ConfigSystem()
-                ));
-
-                $this->setConfig($config);
-            }
-        }
-
-        if (!isset($session->config)) {
-            $session->config = $config;
-        }
     }
 
     public function canHandle()

@@ -1,5 +1,8 @@
 1.0.6
 ------
+- [7843d09]
+  updated changelog
+
 - [0789128]
   raised connector version
 
