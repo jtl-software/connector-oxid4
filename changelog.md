@@ -1,8 +1,16 @@
-1.0.6
+1.1
 ------
+- [929476c]
+  updated version
+
+- [d322db4]
+  cleaned up code
+
 - [7843d09]
   updated changelog
 
+1.0.6
+------
 - [0789128]
   raised connector version
 
