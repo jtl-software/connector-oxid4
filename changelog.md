@@ -1,5 +1,8 @@
 1.1
 ------
+- [d884f30]
+  added crossselling id
+
 - [929476c]
   updated version
 

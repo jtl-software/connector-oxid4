@@ -13,7 +13,7 @@ class JTLConnector
 		$application->run();
 	}
 
-	public function onActivate()
+	public static function onActivate()
 	{
 		$query = 'INSERT INTO oxseo SET 
 			OXSEOURL="jtlconnector/", 
@@ -42,7 +42,7 @@ class JTLConnector
 		}
 	}
 
-	public function onDeactivate()
+	public static function onDeactivate()
 	{
 		$sQuery = 'DELETE FROM oxseo WHERE OXSEOURL="jtlconnector/"';
 		\oxDb::getDb()->execute($sQuery);
