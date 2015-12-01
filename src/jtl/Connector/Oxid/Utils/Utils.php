@@ -66,7 +66,7 @@ class Utils {
 
     public function getCountryIso($id)
     {
-        $db = DB::getInstance();
+        $db = Db::getInstance();
 
         $country = $db->getOne('SELECT OXISOALPHA2 FROM oxcountry WHERE OXID="'.$id.'"');
 
@@ -77,7 +77,7 @@ class Utils {
 
     public function getState($id)
     {
-        $db = DB::getInstance();
+        $db = Db::getInstance();
 
         $state = $db->getOne('SELECT OXID FROM oxstates WHERE OXTITLE="'.$id.'"');
 

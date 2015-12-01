@@ -3,16 +3,11 @@ namespace jtl\Connector\Oxid;
 
 use \jtl\Connector\Core\Rpc\RequestPacket;
 use \jtl\Connector\Core\Utilities\RpcMethod;
-use \jtl\Connector\Core\Rpc\ResponsePacket;
-use \jtl\Connector\Session\SessionHelper;
 use \jtl\Connector\Base\Connector as BaseConnector;
-use \jtl\Connector\Core\Rpc\Error as Error;
-use \jtl\Connector\Core\Http\Response;
 use \jtl\Connector\Oxid\Mapper\PrimaryKeyMapper;
 use \jtl\Connector\Result\Action;
 use \jtl\Connector\Oxid\Auth\TokenLoader;
 use \jtl\Connector\Oxid\Checksum\ChecksumLoader;
-use \jtl\Connector\Core\Logger\Logger;
 
 class Oxid extends BaseConnector
 {

@@ -15,7 +15,7 @@ class JTLConnector
 
 	public static function onActivate()
 	{
-		$query = 'INSERT INTO oxseo SET 
+        $query = 'INSERT INTO oxseo SET
 			OXSEOURL="jtlconnector/", 
 			OXSTDURL="index.php?cl=jtlconnector",
 			OXOBJECTID="'.\oxUtilsObject::getInstance()->generateUID().'", 
@@ -40,6 +40,11 @@ class JTLConnector
 		if (!$oxConfig->getShopConfVar('password', null, 'module:jtl-connector')) {
 			$oxConfig->saveShopConfVar('str', 'password', substr(sha1(uniqid()), 0, 16), null, 'module:jtl-connector');
 		}
+
+        echo '<script language="JavaScript" type="text/javascript">
+            url = "'.html_entity_decode($oxConfig->getActiveView()->getViewConfig()->getSelfLink()).'cl=jtlconnectoradmin";
+            top.basefrm.location = url;
+        </script>';
 	}
 
 	public static function onDeactivate()

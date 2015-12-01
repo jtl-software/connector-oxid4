@@ -1,5 +1,8 @@
 1.1
 ------
+- [826bc23]
+  refactored module methods to static
+
 - [d884f30]
   added crossselling id
 
