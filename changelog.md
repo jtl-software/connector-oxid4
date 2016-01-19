@@ -1,5 +1,8 @@
 1.1
 ------
+- [8f01654]
+  added system check
+
 - [826bc23]
   refactored module methods to static
 

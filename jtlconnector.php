@@ -26,14 +26,31 @@ class JTLConnector
 		
 		\oxDb::getDb()->execute($query);
 		
-		$linkQuery = "CREATE TABLE IF NOT EXISTS jtl_connector_link (
-                    endpointId char(64) NOT NULL,
-                    hostId int(10) NOT NULL,
-                    type int(10),
-                    PRIMARY KEY (endpointId, hostId, type)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+		$linkQuery = "
+			CREATE TABLE IF NOT EXISTS jtl_connector_link (
+				endpointId char(64) NOT NULL,
+				hostId int(10) NOT NULL,
+				type int(10)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		";
 
 		\oxDb::getDb()->execute($linkQuery);
+
+		if (\oxDb::getDb()->execute('SHOW INDEX FROM jtl_connector_link WHERE Key_name = "PRIMARY"')->_numOfRows > 0) {
+			\oxDb::getDb()->execute('ALTER TABLE jtl_connector_link DROP PRIMARY KEY');
+		}
+
+		if (\oxDb::getDb()->execute('SHOW INDEX FROM jtl_connector_link WHERE Key_name = "endpointId"')->_numOfRows == 0) {
+			\oxDb::getDb()->execute('ALTER TABLE jtl_connector_link ADD INDEX(endpointId)');
+		}
+
+		if (\oxDb::getDb()->execute('SHOW INDEX FROM jtl_connector_link WHERE Key_name = "hostId"')->_numOfRows == 0) {
+			\oxDb::getDb()->execute('ALTER TABLE jtl_connector_link ADD INDEX(hostId)');
+		}
+
+		if (\oxDb::getDb()->execute('SHOW INDEX FROM jtl_connector_link WHERE Key_name = "type"')->_numOfRows == 0) {
+			\oxDb::getDb()->execute('ALTER TABLE jtl_connector_link ADD INDEX(type)');
+		}
 
 		$oxConfig = \oxRegistry::getConfig();
 		
