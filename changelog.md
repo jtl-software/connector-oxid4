@@ -1,5 +1,8 @@
 1.1
 ------
+- [c96d5e1]
+  add link table index checks
+
 - [8f01654]
   added system check
 

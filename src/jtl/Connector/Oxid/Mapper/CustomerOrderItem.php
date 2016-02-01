@@ -7,7 +7,7 @@ class CustomerOrderItem extends BaseMapper {
         'customerOrderId' => 'OXORDERID',
         'productId' => 'OXARTID',
         'name' => 'OXTITLE',
-        'price' => 'OXNETPRICE',
+        'price' => 'OXNPRICE',
         'quantity' => 'OXAMOUNT',
         'sku' => 'OXARTNUM',
         'type' => null,
