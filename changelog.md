@@ -1,5 +1,9 @@
 1.1
 ------
+- [90a4d12]
+  fixed shipping method name
+  fixed order item net price
+
 - [c96d5e1]
   add link table index checks
 

@@ -12,7 +12,7 @@ class CustomerOrder extends BaseMapper {
         'note' => 'OXREMARK',
         'orderNumber' => 'OXORDERNR',
         'paymentDate' => 'payDate',
-        'paymentModuleCode' => 'OXPAYMENTSID',
+        'paymentModuleCode' => 'payType',
         'shippingAddress' => 'CustomerOrderShippingAddress',
         'shippingDate' => 'OXSENDDATE',
         'shippingInfo' => 'OXDELADDINFO',
