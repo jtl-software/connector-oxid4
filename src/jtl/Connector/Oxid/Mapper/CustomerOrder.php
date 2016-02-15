@@ -18,7 +18,7 @@ class CustomerOrder extends BaseMapper {
         'shippingInfo' => 'OXDELADDINFO',
         'shippingMethodName' => 'delName',
         'status' => null,
-        'totalSum' => 'OXTOTALORDERSUM',
+        'totalSumGross' => 'OXTOTALORDERSUM',
         'items' => 'CustomerOrderItem'
     );
 

@@ -1,5 +1,9 @@
 1.1
 ------
+- [a1b1b9d]
+  added payment costs, discounts and gift card to orders
+  renamed payment types
+
 - [90a4d12]
   fixed shipping method name
   fixed order item net price

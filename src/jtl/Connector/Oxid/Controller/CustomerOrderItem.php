@@ -24,6 +24,7 @@ class CustomerOrderItem extends BaseController {
         $delivery->setType('shipping');
         $delivery->setName($data['delName']);
         $delivery->setPrice(round($data['OXDELCOST'] / (($data['OXDELVAT'] / 100) + 1 ), 2));
+        $delivery->setPriceGross((float) $data['OXDELCOST']);
         $delivery->setQuantity(1);
         $delivery->setVat(floatval($data['OXDELVAT']));
 
@@ -34,6 +35,7 @@ class CustomerOrderItem extends BaseController {
             $payment->setType('product');
             $payment->setName($data['payType']);
             $payment->setPrice(round($data['OXPAYCOST'] / (($data['OXPAYVAT'] / 100) + 1 ), 2));
+            $payment->setPriceGross((float) $data['OXPAYCOST']);
             $payment->setQuantity(1);
             $payment->setVat(floatval($data['OXPAYVAT']));
 
@@ -45,6 +47,7 @@ class CustomerOrderItem extends BaseController {
             $discount->setType('product');
             $discount->setName('Gutschein Rabatt');
             $discount->setPrice(round($data['OXVOUCHERDISCOUNT'] * -1, 2));
+            $discount->setPriceGross(round($data['OXVOUCHERDISCOUNT'] * -1, 2));
             $discount->setQuantity(1);
             $discount->setVat(0);
 
@@ -56,6 +59,7 @@ class CustomerOrderItem extends BaseController {
             $card->setType('product');
             $card->setName('Grußkarte: '.$data['OXCARDTEXT']);
             $card->setPrice(round($data['OXGIFTCARDCOST'] / (($data['OXGIFTCARDVAT'] / 100) + 1 ), 2));
+            $card->setPriceGross((float) $data['OXGIFTCARDCOST']);
             $card->setQuantity(1);
             $card->setVat(floatval($data['OXGIFTCARDVAT']));
 
