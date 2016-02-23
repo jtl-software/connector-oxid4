@@ -21,6 +21,7 @@ class CustomerOrderBillingAddress extends BaseController {
         $return->setState($this->utils->getState($data['OXBILLSTATEID']));
         $return->setStreet($data['OXBILLSTREET'].' '.$data['OXBILLSTREETNR']);
         $return->setZipCode($data['OXBILLZIP']);
+        $return->setVatNumber($data['OXBILLUSTID']);
 
         return $return;
     }

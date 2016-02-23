@@ -2,10 +2,11 @@
 class JTLConnector
 { 
 	public function __construct() {
-		require_once __DIR__."/vendor/autoload.php";
-		
 		defined('CONNECTOR_DIR') || define("CONNECTOR_DIR", __DIR__);
-				
+
+		$loader = require_once __DIR__."/vendor/autoload.php";
+		$loader->add('', CONNECTOR_DIR . '/plugins');
+
 		$connector = \jtl\Connector\Oxid\Oxid::getInstance();
 	
 		$application = \jtl\Connector\Application\Application::getInstance();

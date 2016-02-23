@@ -43,6 +43,7 @@ class Product extends BaseMapper
 		//'specialPrices' => 'ProductSpecialPrice',
 		'variations' => 'ProductVariation',
 		'considerStock' => null,
+		'permitNegativeStock' => null,
         'recommendedRetailPrice' => 'OXTPRICE'
 	);
 
@@ -71,6 +72,7 @@ class Product extends BaseMapper
 		'ProductVariation' => 'variations',
 		'OXSHOPID' => null,
 		'OXSTOCK' => null,
+        'OXSTOCKFLAG' => null,
         'OXTPRICE' => 'recommendedRetailPrice'
 	);
 
@@ -79,10 +81,24 @@ class Product extends BaseMapper
 		return \oxRegistry::getConfig()->getConfigParam('blUseStock');
 	}
 
+	protected function permitNegativeStock($data)
+	{
+		if ($data['OXSTOCKFLAG'] == 1) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected function OXSTOCK($data)
 	{
 		return $data->getStockLevel()->getStockLevel();
 	}
+
+    protected function OXSTOCKFLAG($data)
+    {
+        return $data->getPermitNegativeStock() == true ? 1 : 3;
+    }
 
 	protected function OXSHOPID($data)
 	{

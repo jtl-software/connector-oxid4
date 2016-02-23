@@ -26,8 +26,7 @@
 	},
     "autoload": {
         "psr-0": {
-            "jtl\\Connector\\Oxid": "src/",
-            "": "plugins/"
+            "jtl\\Connector\\Oxid": "src/"
         }
     }
 }

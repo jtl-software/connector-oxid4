@@ -1,5 +1,8 @@
-1.1
+1.2
 ------
+- [3cbc539]
+  added gross prices
+
 - [a1b1b9d]
   added payment costs, discounts and gift card to orders
   renamed payment types
@@ -20,6 +23,8 @@
 - [d884f30]
   added crossselling id
 
+1.1
+------
 - [929476c]
   updated version
 
