@@ -61,7 +61,7 @@ class Manufacturer extends BaseController
 		$manufacturer = new \oxManufacturer();
 
 		if (!$manufacturer->delete($data->getId()->getEndpoint())) {
-			throw new \Exception('Error deleting manufacturer with id: '.$data->getId()->getEndpoint());
+			//throw new \Exception('Error deleting manufacturer with id: '.$data->getId()->getEndpoint());
 		}
 
 		$this->db->execute('UPDATE oxarticles SET oxmanufacturerid = NULL WHERE oxmanufacturerid = "'.$data->getId()->getEndpoint().'"');

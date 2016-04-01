@@ -1,5 +1,9 @@
 1.2
 ------
+- [d9f0222]
+  changed plugin autoloader
+  bugfixes
+
 - [3cbc539]
   added gross prices
 
