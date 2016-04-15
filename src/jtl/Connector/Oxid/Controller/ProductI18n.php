@@ -23,7 +23,13 @@ class ProductI18n extends BaseController
 				$i18n->setLanguageISO($language->iso3);
 				$i18n->setProductId($model->getId());
 				$i18n->setMeasurementUnitName($data['OXUNITNAME']);
-				
+
+				$seoUrl = $this->db->getOne('SELECT OXSEOURL from oxseo WHERE OXOBJECTID="'.$data['OXID'].'" && OXTYPE="oxarticle" && OXLANG='.$id);
+
+				if ($seoUrl !== false) {
+					$i18n->setUrlPath($seoUrl);
+				}
+
 				$metaKeys = $seoEncoder->getMetaData($data['OXID'], 'oxkeywords', null, $id);
 				if ($metaKeys) {
 					$i18n->setMetaKeywords($metaKeys);
@@ -48,6 +54,8 @@ class ProductI18n extends BaseController
         $extend->init('oxartextends');
         $extend->setId($data->getId()->getEndpoint());
 
+        $seoEncoder = new \oxSeoEncoder();
+
         foreach ($data->getI18ns() as $i18n) {
 			$id = $this->utils->getLanguageId($i18n->getLanguageISO());
 			
@@ -66,7 +74,7 @@ class ProductI18n extends BaseController
 
                 $extend->{oxartextends__oxlongdesc.$column} = new \oxField($i18n->getDescription());
                 $extend->{oxartextends__oxtags.$column} = new \oxField($data->getKeywords());
-
+                /*
                 $seo = new \stdClass();
                 $seo->OXOBJECTID = $data->getId()->getEndpoint();
                 $seo->OXSHOPID = 'oxbaseshop';
@@ -75,9 +83,17 @@ class ProductI18n extends BaseController
                 $seo->OXDESCRIPTION = $i18n->getMetaDescription();
 
                 $this->db->insert($seo, 'oxobject2seodata');
+                */
+
+                $seoEncoder->deleteSeoEntry($data->getId()->getEndpoint(), 'oxbaseshop', $id, 'oxarticle');
+
+                foreach ($model->getCategoryIds() as $catId) {
+                    $seoEncoder->addSeoEntry($data->getId()->getEndpoint(), 'oxbaseshop', $id, $model->getStdLink($id), $i18n->getUrlPath(), 'oxarticle', 1, $i18n->getMetaKeywords(), $i18n->getMetaDescription(), $catId);
+                }
 			}
 		}
 
+        $model->save();
         $extend->save();
 	}	
 }

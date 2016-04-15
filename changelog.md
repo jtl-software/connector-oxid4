@@ -1,5 +1,8 @@
 1.2
 ------
+- [2f4626b]
+  avoid exception
+
 - [d9f0222]
   changed plugin autoloader
   bugfixes

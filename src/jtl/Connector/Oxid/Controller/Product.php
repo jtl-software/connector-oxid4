@@ -56,6 +56,9 @@ class Product extends BaseController
         $cats = new Product2Category();
         $cats->pushData($data);
 
+        $i18ns = new ProductI18n();
+        $i18ns->pushData($data, $product);
+
         $attrs = new ProductAttr();
         $attrs->pushData($data);
 

@@ -33,22 +33,21 @@ class Utils {
 		if (is_null($this->session->languages)) {
 			$languages = array();
 			$oxConfig = \oxRegistry::getConfig();
-			$column = 0;
+			$oxLang = new \oxLang();
 
-			foreach ($oxConfig->getShopConfVar('aLanguages') as $iso2 => $name) {
+			foreach($oxLang->getLanguageArray() as $language) {
 				$obj = new \stdClass;
-				$obj->iso2 = $iso2;
-				$obj->iso3 = Language::convert($iso2);
-				$obj->name = $name;
-				$obj->column = $column;
-				
-				$languages[$column] = $obj;
+				$obj->iso2 = $language->oxid;
+				$obj->iso3 = Language::convert($language->oxid);
+				$obj->name = $language->name;
+				$obj->column = $language->id;
+				$obj->default = $oxConfig->getConfigParam('sDefaultLang') == $language->id ? true : false;
 
-				$column++;
+				$languages[$language->id] = $obj;
 			}
 
 			$this->session->languages = $languages;		
-		}		
+		}
 
 		return $this->session->languages;
 	}

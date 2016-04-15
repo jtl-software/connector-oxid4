@@ -67,7 +67,7 @@ class Product extends BaseMapper
 		'ProductStockLevel' => 'stockLevel',
 		'OXVAT' => null,
 		'OXWIDTH' => 'width',
-		'ProductI18n' => 'i18ns',
+		//'ProductI18n' => 'i18ns',
 		//'ProductSpecialPrice' => 'specialPrices',
 		'ProductVariation' => 'variations',
 		'OXSHOPID' => null,

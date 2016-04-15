@@ -5,14 +5,9 @@ class Language extends BaseMapper
 {
 	protected $pull = array(
 		'id' => 'column',
-		'isDefault' => null,
+		'isDefault' => 'default',
 		'languageISO' => 'iso3',
 		'nameEnglish' => 'name',
 		'nameGerman' => 'name'
 	);
-
-	protected function isDefault($data)
-	{
-		return $data['column'] === 0 ? true : false;
-	}
 }
