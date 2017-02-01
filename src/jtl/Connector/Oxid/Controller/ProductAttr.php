@@ -48,7 +48,7 @@ class ProductAttr extends BaseController
                 }
             }
 
-			$checkAttr = $this->db->getOne('SELECT OXID from oxattribute WHERE OXTITLE="'.$attrObj->OXTITLE.'"');
+			$checkAttr = $this->db->getOne('SELECT OXID from oxattribute WHERE OXTITLE="'.mysqli_real_escape_string($attrObj->OXTITLE).'"');
 
 			if ($checkAttr === false) {
 				$attrObj->OXID = $this->utils->oxid();
