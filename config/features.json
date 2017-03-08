@@ -322,7 +322,7 @@
         },
         "ProductVarCombination": {
             "pull": false,
-            "push": true,
+            "push": false,
             "delete": false
         },
         "ProductVariation": {
